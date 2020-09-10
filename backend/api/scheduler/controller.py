@@ -64,3 +64,25 @@ def create_client(rut,nombre,email,contacto1,contacto2,created_by,updated_by):
 
     client.save()
     return client
+
+#Residence
+def get_residence_by_email(email):
+    if not email:
+        raise Exception('residence email provided.')
+    try:
+        residence = Residence.objects.get(email=email)
+    except residence.DoesNotExist:
+        residence = None
+
+    return residence
+
+def create_residence(comuna,direccion,mac,pppoe,client_rut):
+    client=get_client_by_rut(client_rut)
+    residence = Residence(
+            comuna=comuna,
+            direccion=direccion,
+            mac=mac,
+            pppoe=pppoe,
+            client=client)
+    residence.save()
+    return residence
