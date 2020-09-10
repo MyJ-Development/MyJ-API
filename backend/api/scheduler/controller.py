@@ -21,12 +21,6 @@ def get_client_by_email(email):
 
     return client
 
-def get_client_by_id(id):
-    if not id:
-        raise Exception('No client id provided.')
-
-    return Client.objects.get(id=id)
-
 def get_client_by_rut(rut):
     if not rut:
         raise Exception('No client rut provided.')
@@ -45,32 +39,24 @@ def update_client(client):
     client.save()
 
 def create_client(rut,nombre,email,contacto1,contacto2,created_by,updated_by):
-    client = {
-        'rut':rut,
-        'email':email,
-        'contacto1':contacto1,
-        'contacto2':contacto2,
-        'created_by':created_by,
-        'updated_by':updated_by
-    }
-
-    client = Client(email="hola",
-                rut=rut,
+    client = Client(
+                rut=rut, 
                 nombre=nombre,
+                email=email,
                 contacto1=contacto1,
                 contacto2=contacto2,
-                created_by="hola",
+                created_by=created_by,
                 updated_by=updated_by)
 
     client.save()
     return client
 
 #Residence
-def get_residence_by_email(email):
-    if not email:
-        raise Exception('residence email provided.')
+def get_residence_by_rut(rut):
+    if not rut:
+        raise Exception('residence rut provided.')
     try:
-        residence = Residence.objects.get(email=email)
+        residence = Residence.objects.get(rut=rut)
     except residence.DoesNotExist:
         residence = None
 
@@ -86,3 +72,25 @@ def create_residence(comuna,direccion,mac,pppoe,client_rut):
             client=client)
     residence.save()
     return residence
+
+#Technician
+def get_technician_by_rut(rut):
+    if not rut:
+        raise Exception('No technician rut provided.')
+    try:
+        return Technician.objects.get(rut=rut)
+    except Exception:
+        return None
+
+
+    
+
+def create_technician(rut,comuna,nombre,estado,capacidad):
+    technician = Technician(
+            rut=rut,
+            comuna=comuna,
+            nombre=nombre,
+            estado=estado,
+            capacidad=capacidad)
+    technician.save()
+    return technician

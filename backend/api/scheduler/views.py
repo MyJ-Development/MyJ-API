@@ -7,7 +7,8 @@ from ..auth.views import CustomTokenObtainPairSerializer
 from django.http import JsonResponse
 from ..common import Common
 from .controller import get_client_by_rut, update_client, create_client
-from .controller import get_residence_by_email,create_residence
+from .controller import get_residence_by_rut,create_residence
+from .controller import get_technician_by_rut,create_technician
 
 logger = logging.getLogger(__name__)
 common_methods = Common()
@@ -93,6 +94,19 @@ class SchedulerResidenceView(APIView):
         residence=create_residence(data['comuna'],data['direccion'],data['mac'],data['pppoe'],data['client_rut'])
         return JsonResponse(_serialize_residence(residence))
 
+class SchedulerTechnicianView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    @staticmethod
+    def get(request):
+        technician = get_technician_by_rut(request.data['rut'])
+        return JsonResponse(_serialize_technician(technician))
+    
+    @staticmethod
+    def post(request):
+        data = common_methods.get_request_data(request)
+        technician=create_technician(data['rut'],data['comuna'],data['nombre'],data['estado'],data['capacidad'])
+        return JsonResponse(_serialize_technician(technician))
 
 def _serialize_client(client):
     return {
@@ -119,3 +133,16 @@ def _serialize_residence(residence):
             'pppoe': residence.pppoe
         }
     }
+
+def _serialize_technician(technician):
+    return {
+        "Code":"200",
+        "Response": {
+            'rut': technician.rut,
+            'comuna': technician.comuna,
+            'nombre': technician.nombre,
+            'estado': technician.estado,
+            'capacidad': technician.capacidad
+        }
+    }
+

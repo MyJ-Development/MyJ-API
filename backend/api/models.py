@@ -39,7 +39,7 @@ class Client(models.Model):
 
 class Residence(models.Model):
     id = models.AutoField(primary_key=True)
-    comuna = models.CharField( max_length=50)
+    comuna = models.CharField(max_length=50)
     direccion = models.CharField(max_length=50)
     mac = models.CharField(blank=True,max_length=12)
     pppoe = models.CharField(blank=True,max_length=50)
@@ -47,9 +47,10 @@ class Residence(models.Model):
 
 class Technician(models.Model):
     id = models.IntegerField(primary_key=True)
+    rut = models.CharField(max_length=11,blank=True)
     comuna = models.CharField(blank=True, max_length=50)
     nombre = models.CharField(max_length=50)
-    estado = models.CharField(blank=True,max_length=12)
+    estado = models.CharField(blank=True,max_length=50)
     capacidad = models.IntegerField(blank=True)
 
 cliente_estados = (
