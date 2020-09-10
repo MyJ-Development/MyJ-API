@@ -33,8 +33,8 @@ class Client(models.Model):
     contacto2 = models.CharField(blank=True,max_length=13)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True,blank=True)
-    created_by = models.CharField(max_length=50)
-    updated_by = models.CharField(max_length=50)
+    created_by = models.ForeignKey(User,on_delete=models.DO_NOTHING,related_name='client2createdby')
+    updated_by = models.ForeignKey(User,on_delete=models.DO_NOTHING,related_name='client2updatedby')
 
 
 class Residence(models.Model):

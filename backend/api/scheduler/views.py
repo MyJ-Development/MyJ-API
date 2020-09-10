@@ -9,10 +9,10 @@ from ..common import Common
 from .controller import get_client_by_rut, update_client, create_client
 from .controller import get_residence_by_rut,create_residence
 from .controller import get_technician_by_rut,create_technician
+from .controller import get_user_by_email
 
 logger = logging.getLogger(__name__)
 common_methods = Common()
-
 
 class SchedulerClientView(APIView):
     permission_classes = (IsAuthenticated,)
@@ -116,8 +116,6 @@ def _serialize_client(client):
             'rut': client.rut,
             'contacto1': client.contacto1,
             'contacto2': client.contacto2,
-            'created_by' : client.created_by,
-            'updated_by' : client.updated_by,
             'created_at' : client.created_at,
             'updated_at' : client.updated_at
         }

@@ -10,6 +10,14 @@ import logging
 
 encryptor = None
 
+def get_user_by_email(email):
+    if not email:
+        raise Exception('No user email provided.')
+    try:
+        return User.objects.get(email=email)
+    except User.DoesNotExist:
+        return 0
+
 #CLIENT
 def get_client_by_email(email):
     if not email:
@@ -39,17 +47,19 @@ def update_client(client):
     client.save()
 
 def create_client(rut,nombre,email,contacto1,contacto2,created_by,updated_by):
+    user = get_user_by_email(created_by)
     client = Client(
                 rut=rut, 
                 nombre=nombre,
                 email=email,
                 contacto1=contacto1,
                 contacto2=contacto2,
-                created_by=created_by,
-                updated_by=updated_by)
+                created_by=user,
+                updated_by=user)
 
     client.save()
     return client
+
 
 #Residence
 def get_residence_by_rut(rut):
@@ -73,6 +83,7 @@ def create_residence(comuna,direccion,mac,pppoe,client_rut):
     residence.save()
     return residence
 
+
 #Technician
 def get_technician_by_rut(rut):
     if not rut:
@@ -81,9 +92,6 @@ def get_technician_by_rut(rut):
         return Technician.objects.get(rut=rut)
     except Exception:
         return None
-
-
-    
 
 def create_technician(rut,comuna,nombre,estado,capacidad):
     technician = Technician(
@@ -94,3 +102,6 @@ def create_technician(rut,comuna,nombre,estado,capacidad):
             capacidad=capacidad)
     technician.save()
     return technician
+
+
+#Order
