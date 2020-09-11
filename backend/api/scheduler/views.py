@@ -10,6 +10,7 @@ from .controller import get_client_by_rut, update_client, create_client
 from .controller import get_residence_by_rut,create_residence
 from .controller import get_technician_by_rut,create_technician
 from .controller import get_user_by_email
+from .controller import create_order,get_order_by_id
 
 logger = logging.getLogger(__name__)
 common_methods = Common()
@@ -108,6 +109,21 @@ class SchedulerTechnicianView(APIView):
         technician=create_technician(data['rut'],data['comuna'],data['nombre'],data['estado'],data['capacidad'])
         return JsonResponse(_serialize_technician(technician))
 
+class SchedulerOrderView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    @staticmethod
+    def get(request):
+        order = get_order_by_id(request.data['id'])
+        return JsonResponse(_serialize_order(order))
+    
+    @staticmethod
+    def post(request):
+        data = common_methods.get_request_data(request)
+        order=create_order(data)
+        return JsonResponse(_serialize_order(order))
+
+
 def _serialize_client(client):
     return {
         "Code":"200",
@@ -141,6 +157,24 @@ def _serialize_technician(technician):
             'nombre': technician.nombre,
             'estado': technician.estado,
             'capacidad': technician.capacidad
+        }
+    }
+
+def _serialize_order(order):
+    return {
+        "Code":"200",
+        "Response": {
+            'id': order.id,
+            'tipo': order.tipo,
+            'prioridad': order.prioridad,
+            'disponibilidad': order.disponibilidad,
+            'comentario': order.comentario,
+            'fechaejecucion': order.fechaejecucion,
+            'estadocliente': order.estadocliente,
+            'estadoticket': order.estadoticket,
+            'mediodepago': order.mediodepago,
+            'monto': order.monto,
+            'created_at': order.created_at
         }
     }
 

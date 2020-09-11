@@ -105,3 +105,34 @@ def create_technician(rut,comuna,nombre,estado,capacidad):
 
 
 #Order
+def get_order_by_id(id):
+    if not id:
+        raise Exception('order id not provided.')
+    try:
+        order = Order.objects.get(id=id)
+    except order.DoesNotExist:
+        order = None
+
+    return order
+
+def create_order(order):
+    user = get_user_by_email(order['created_by'])
+    cliente = get_client_by_rut(order['client_order'])
+    tecnico = get_technician_by_rut(order['encargado'])
+
+    order = Order(
+            tipo=order['tipo'],
+            prioridad=order['prioridad'],
+            disponibilidad=order['disponibilidad'],
+            comentario=order['comentario'],
+            fechaejecucion=order['fechaejecucion'],
+            estadocliente=order['estadocliente'],
+            estadoticket=order['estadoticket'],
+            mediodepago=order['mediodepago'],
+            monto=order['monto'],
+            created_by=user,
+            encargado=tecnico,
+            client_order=cliente)
+        
+    order.save()
+    return order

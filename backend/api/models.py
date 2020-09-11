@@ -92,7 +92,7 @@ class Tracking(models.Model):
     id = models.AutoField(primary_key=True)
     comentario = models.CharField(max_length=300)
     created_by = models.ForeignKey(Order,on_delete=models.CASCADE,related_name='tracking2created')
-    created_at = models.ForeignKey(Order,on_delete=models.CASCADE,related_name='tracking2createdat')
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 
