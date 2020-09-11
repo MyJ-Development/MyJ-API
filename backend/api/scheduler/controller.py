@@ -73,6 +73,18 @@ def get_residence_by_rut(rut):
 
     return residence
 
+def get_residence_by_id(idresidence):
+
+    if not idresidence:
+        raise Exception('residence id not provided.')
+    try:
+        residence = Residence.objects.get(id=idresidence)
+
+    except Exception:
+        raise Exception("Excepcion")
+
+    return residence
+
 def create_residence(residence):
     client=get_client_by_rut(residence['client_rut'])
     residence = Residence(
@@ -83,8 +95,6 @@ def create_residence(residence):
             client=client)
     residence.save()
     return residence
-
-
 
 #Technician
 def get_technician_by_rut(rut):
@@ -97,11 +107,11 @@ def get_technician_by_rut(rut):
 
 def create_technician(technician):
     technician = Technician(
-            rut=techinician['rut'],
-            comuna=techinician['comuna'],
-            nombre=techinician['nombre'],
-            estado=techinician['estado'],
-            capacidad=techinician['capacidad'])
+            rut=technician['rut'],
+            comuna=technician['comuna'],
+            nombre=technician['nombre'],
+            estado=technician['estado'],
+            capacidad=technician['capacidad'])
     technician.save()
     return technician
 
@@ -121,6 +131,7 @@ def create_order(order):
     user = get_user_by_email(order['created_by'])
     cliente = get_client_by_rut(order['client_order'])
     tecnico = get_technician_by_rut(order['encargado'])
+    domicilio = get_residence_by_id(order['domicilio'])
 
     order = Order(
             tipo=order['tipo'],
@@ -134,7 +145,33 @@ def create_order(order):
             monto=order['monto'],
             created_by=user,
             encargado=tecnico,
-            client_order=cliente)
+            client_order=cliente,
+            client_residence=domicilio)
         
     order.save()
     return order
+
+#Tracking
+def get_tracking_by_rut(rut):
+    if not rut:
+        raise Exception('residence rut not provided.')
+    try:
+        tracking = Tracking.objects.all()
+
+    except Exception:
+        raise Exception("Not found")
+
+    return tracking
+
+def create_tracking(residence):
+    client=get_client_by_rut(residence['client_rut'])
+    residence = Residence(
+            comuna=residence['comuna'],
+            direccion=residence['direccion'],
+            mac=residence['mac'],
+            pppoe=residence['pppoe'],
+            client=client)
+    residence.save()
+    return residence
+
+

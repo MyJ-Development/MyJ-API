@@ -86,6 +86,7 @@ class Order(models.Model):
     created_by = models.ForeignKey(User,blank=True,on_delete=models.DO_NOTHING)
     encargado = models.ForeignKey(Technician,blank=True,on_delete=models.DO_NOTHING)
     client_order = models.ForeignKey(Client,blank=True,on_delete=models.DO_NOTHING)
+    client_residence = models.ForeignKey(Residence,blank=True,on_delete=models.DO_NOTHING,default="0")
 
 class Tracking(models.Model):
     id = models.AutoField(primary_key=True)

@@ -7,7 +7,7 @@ from ..auth.views import CustomTokenObtainPairSerializer
 from django.http import JsonResponse
 from ..common import Common
 from .controller import get_client_by_rut, update_client, create_client
-from .controller import get_residence_by_rut,create_residence
+from .controller import get_residence_by_rut,create_residence,get_residence_by_id
 from .controller import get_technician_by_rut,create_technician
 from .controller import get_user_by_email
 from .controller import create_order,get_order_by_id
@@ -68,9 +68,8 @@ class SchedulerResidenceView(APIView):
 
     @staticmethod
     def get(request):
-        residence = get_residence_by_rut(request.data['rut'])
-        serialize = ResidenceSerializer(residence,many=True)
-        return JsonResponse(serialize.data,safe=False)
+        residence = get_residence_by_id(request.data['idresidence'])
+        return JsonResponse(_serialize_residence(residence))
 
     @staticmethod
     def post(request):
@@ -97,8 +96,9 @@ class SchedulerOrderView(APIView):
 
     @staticmethod
     def get(request):
-        order = get_order_by_id(request.data['id'])
-        return JsonResponse(_serialize_order(order))
+        residence = get_residence_by_rut(request.data['rut'])
+        serialize = ResidenceSerializer(residence,many=True)
+        return JsonResponse(serialize.data,safe=False)
     
     @staticmethod
     def post(request):
