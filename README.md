@@ -1,20 +1,25 @@
 # MyJ-API
-Peticiones POST (JSON) Todas las peticiones requieren un bearer token (access_token) otorgado al hacer login
+##Peticiones POST (JSON) Todas las peticiones requieren un bearer token (access_token) otorgado al hacer login
 
 http://IP:PORT/api/auth/sign-up
+```javascript
 {
     "email":"test@test.test",
     "password":"test",
     "fullName":"testing"
 }
+```
 
 http://IP:PORT/api/auth/login
+```javascript
 {
     "email": "test@test.test",
     "password": "test"
 }
+```
 
 http://IP:PORT/api/scheduler/technician
+```javascript
 {
     "comuna":"Comuna",
     "rut":"123456789",
@@ -22,8 +27,10 @@ http://IP:PORT/api/scheduler/technician
     "capacidad":"7",
     "estado":"No disponible"
 }
+```
 
 http://IP:PORT/api/scheduler/client
+```javascript
 {
     "rut":"987654321",
     "email":"asdas@asda.com",
@@ -33,14 +40,17 @@ http://IP:PORT/api/scheduler/client
     "created_by": "test@test.test", //Correo del usuario actual
     "updated_by": "test@test.test"  //Correo del usuario actual
 }
+```
 
 http://IP:PORT/api/scheduler/residence
+```javascript
 {
     "comuna":"Comuna",
     "direccion":"direccion",
     "mac":"mac",
     "pppoe":"pppoe"
 }
+```
 
 http://IP:PORT/api/scheduler/order
 ```javascript
@@ -60,24 +70,33 @@ http://IP:PORT/api/scheduler/order
 }
 ```
 
-Peticiones GET Todas las peticiones requieren un bearer token (access_token) otorgado al hacer login
+##Peticiones GET Todas las peticiones requieren un bearer token (access_token) otorgado al hacer login
 
 http://IP:PORT/api/scheduler/order
+```javascript
 {
     "id":"1"
 }
+```
 
 http://10.19.11.9:3003/api/scheduler/technician
+```javascript
 {
     "rut":"rut"
 }
+```
 
 http://IP:PORT/api/scheduler/client
+```javascript
 {
     "rut":"123422125"
 }
+```
 
 http://IP:PORT/api/scheduler/residence
+```javascript
 {
     "rut":"987654321"
 }
+```
+
