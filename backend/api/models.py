@@ -2,7 +2,6 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import PermissionsMixin, AbstractBaseUser
 
-
 class User(AbstractBaseUser, PermissionsMixin):
     id = models.IntegerField(unique=True, primary_key=True)
     email = models.CharField(max_length=30) 

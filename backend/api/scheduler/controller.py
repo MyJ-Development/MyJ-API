@@ -64,11 +64,12 @@ def create_client(client):
 #Residence
 def get_residence_by_rut(rut):
     if not rut:
-        raise Exception('residence rut provided.')
+        raise Exception('residence rut not provided.')
     try:
-        residence = Residence.objects.get(rut=rut)
-    except residence.DoesNotExist:
-        residence = None
+        residence = Residence.objects.filter(client__rut=rut)
+
+    except Exception:
+        raise Exception("Not found")
 
     return residence
 
@@ -79,9 +80,10 @@ def create_residence(residence):
             direccion=residence['direccion'],
             mac=residence['mac'],
             pppoe=residence['pppoe'],
-            client=residence['client'])
+            client=client)
     residence.save()
     return residence
+
 
 
 #Technician
