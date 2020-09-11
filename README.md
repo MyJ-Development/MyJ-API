@@ -43,6 +43,7 @@ http://IP:PORT/api/scheduler/residence
 }
 
 http://IP:PORT/api/scheduler/order
+```javascript
 {
     "tipo":"Instalacion",
     "prioridad":"Primera del dia",
@@ -57,7 +58,7 @@ http://IP:PORT/api/scheduler/order
     "encargado":"123456789",      //Rut tecnico encargado
     "client_order": "987654321"   //Rut cliente de la orden
 }
-
+```
 
 Peticiones GET Todas las peticiones requieren un bearer token (access_token) otorgado al hacer login
 
