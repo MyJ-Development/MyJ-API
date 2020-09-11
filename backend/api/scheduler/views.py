@@ -68,8 +68,9 @@ class SchedulerResidenceView(APIView):
 
     @staticmethod
     def get(request):
-        residence = get_residence_by_id(request.data['idresidence'])
-        return JsonResponse(_serialize_residence(residence))
+        residence = get_residence_by_rut(request.data['rut'])
+        serialize = ResidenceSerializer(residence,many=True)
+        return JsonResponse(serialize.data,safe=False)
 
     @staticmethod
     def post(request):
@@ -96,8 +97,8 @@ class SchedulerOrderView(APIView):
 
     @staticmethod
     def get(request):
-        residence = get_residence_by_rut(request.data['rut'])
-        serialize = ResidenceSerializer(residence,many=True)
+        order = get_order_by_date(request.data['date'])
+        serialize = OrderSerializer(order,many=True)
         return JsonResponse(serialize.data,safe=False)
     
     @staticmethod

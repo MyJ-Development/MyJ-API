@@ -127,6 +127,17 @@ def get_order_by_id(id):
 
     return order
 
+def get_order_by_date(date):
+    if not date:
+        raise Exception('residence rut not provided.')
+    try:
+        residence = Residence.objects.filter(client__rut=date)
+
+    except Exception:
+        raise Exception("Not found")
+
+    return residence
+
 def create_order(order):
     user = get_user_by_email(order['created_by'])
     cliente = get_client_by_rut(order['client_order'])
