@@ -46,14 +46,14 @@ def update_client(client):
                 updated_by=client.updated_by)
     client.save()
 
-def create_client(rut,nombre,email,contacto1,contacto2,created_by,updated_by):
-    user = get_user_by_email(created_by)
+def create_client(client):
+    user = get_user_by_email(client['created_by'])
     client = Client(
-                rut=rut, 
-                nombre=nombre,
-                email=email,
-                contacto1=contacto1,
-                contacto2=contacto2,
+                rut=client['rut'], 
+                nombre=client['nombre'],
+                email=client['email'],
+                contacto1=client['contacto1'],
+                contacto2=client['contacto2'],
                 created_by=user,
                 updated_by=user)
 
@@ -72,14 +72,14 @@ def get_residence_by_rut(rut):
 
     return residence
 
-def create_residence(comuna,direccion,mac,pppoe,client_rut):
-    client=get_client_by_rut(client_rut)
+def create_residence(residence):
+    client=get_client_by_rut(residence['client_rut'])
     residence = Residence(
-            comuna=comuna,
-            direccion=direccion,
-            mac=mac,
-            pppoe=pppoe,
-            client=client)
+            comuna=residence['comuna'],
+            direccion=residence['direccion'],
+            mac=residence['mac'],
+            pppoe=residence['pppoe'],
+            client=residence['client'])
     residence.save()
     return residence
 
@@ -93,13 +93,13 @@ def get_technician_by_rut(rut):
     except Exception:
         return None
 
-def create_technician(rut,comuna,nombre,estado,capacidad):
+def create_technician(technician):
     technician = Technician(
-            rut=rut,
-            comuna=comuna,
-            nombre=nombre,
-            estado=estado,
-            capacidad=capacidad)
+            rut=techinician['rut'],
+            comuna=techinician['comuna'],
+            nombre=techinician['nombre'],
+            estado=techinician['estado'],
+            capacidad=techinician['capacidad'])
     technician.save()
     return technician
 

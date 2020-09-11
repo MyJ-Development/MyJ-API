@@ -54,7 +54,7 @@ class SchedulerClientView(APIView):
         if(client):
             return JsonResponse({ "Code":"303" ,"Response": "Already exists"})
         else:
-            client=create_client(data['rut'],data['nombre'],data['email'],data['contacto1'],data['contacto2'],data['created_by'],data['updated_by'])
+            client=create_client(data)
             return JsonResponse(_serialize_client(client))
 
 class SchedulerResidenceView(APIView):
@@ -92,6 +92,7 @@ class SchedulerResidenceView(APIView):
     @staticmethod
     def post(request):
         data = common_methods.get_request_data(request)
+
         residence=create_residence(data['comuna'],data['direccion'],data['mac'],data['pppoe'],data['client_rut'])
         return JsonResponse(_serialize_residence(residence))
 
@@ -106,7 +107,7 @@ class SchedulerTechnicianView(APIView):
     @staticmethod
     def post(request):
         data = common_methods.get_request_data(request)
-        technician=create_technician(data['rut'],data['comuna'],data['nombre'],data['estado'],data['capacidad'])
+        technician=create_technician(data)
         return JsonResponse(_serialize_technician(technician))
 
 class SchedulerOrderView(APIView):
