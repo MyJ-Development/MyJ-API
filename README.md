@@ -1,5 +1,5 @@
 # MyJ-API
-##Peticiones POST (JSON) Todas las peticiones requieren un bearer token (access_token) otorgado al hacer login
+### Peticiones POST (JSON) Todas las peticiones requieren un bearer token (access_token) otorgado al hacer login
 
 http://IP:PORT/api/auth/sign-up
 ```javascript
@@ -70,7 +70,7 @@ http://IP:PORT/api/scheduler/order
 }
 ```
 
-##Peticiones GET Todas las peticiones requieren un bearer token (access_token) otorgado al hacer login
+### Peticiones GET Todas las peticiones requieren un bearer token (access_token) otorgado al hacer login
 
 http://IP:PORT/api/scheduler/order
 ```javascript
