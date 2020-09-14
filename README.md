@@ -67,6 +67,7 @@ http://IP:PORT/api/scheduler/order
     "created_by":"test@test.test", //Correo del usuario actual
     "encargado":"123456789",      //Rut tecnico encargado
     "client_order": "987654321"   //Rut cliente de la orden
+    "domicilio": "1"              //ID Domicilio del cliente
 }
 ```
 
@@ -84,6 +85,8 @@ http://10.19.11.9:3003/api/scheduler/technician
 {
     "rut":"rut"
 }
+
+
 ```
 
 http://IP:PORT/api/scheduler/client
@@ -97,6 +100,13 @@ http://IP:PORT/api/scheduler/residence
 ```javascript
 {
     "rut":"987654321"
+}
+```
+
+http://IP:PORT/api/scheduler/order //Por ahora devuelve todas las ordenes previas a hoy
+```javascript
+{
+    "date_end":"2020-05-05T15:23:00"
 }
 ```
 

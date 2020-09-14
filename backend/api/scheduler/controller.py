@@ -7,6 +7,7 @@ import hashlib
 from django.conf import settings
 from ..models import User, Client, Residence,Technician, Order, Tracking
 import logging
+from django.utils import timezone
 
 encryptor = None
 
@@ -127,16 +128,16 @@ def get_order_by_id(id):
 
     return order
 
-def get_order_by_date(date):
-    if not date:
-        raise Exception('residence rut not provided.')
+def get_order_by_date(date_end):
+    if not date_end:
+        raise Exception('order rut not provided.')
     try:
-        residence = Residence.objects.filter(client__rut=date)
+        order = Order.objects.filter(created_at__gte=timezone.now().date())
 
     except Exception:
         raise Exception("Not found")
 
-    return residence
+    return order
 
 def create_order(order):
     user = get_user_by_email(order['created_by'])

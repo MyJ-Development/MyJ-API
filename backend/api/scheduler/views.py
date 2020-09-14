@@ -10,8 +10,8 @@ from .controller import get_client_by_rut, update_client, create_client
 from .controller import get_residence_by_rut,create_residence,get_residence_by_id
 from .controller import get_technician_by_rut,create_technician
 from .controller import get_user_by_email
-from .controller import create_order,get_order_by_id
-from .serializers import ResidenceSerializer
+from .controller import create_order,get_order_by_date
+from .serializers import ResidenceSerializer,OrderSerializer
 from rest_framework import serializers
 from django.http import HttpResponse
 from django.http import JsonResponse
@@ -97,7 +97,7 @@ class SchedulerOrderView(APIView):
 
     @staticmethod
     def get(request):
-        order = get_order_by_date(request.data['date'])
+        order = get_order_by_date(request.data['date_end'])
         serialize = OrderSerializer(order,many=True)
         return JsonResponse(serialize.data,safe=False)
     
