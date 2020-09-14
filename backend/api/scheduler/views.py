@@ -133,7 +133,6 @@ def _serialize_residence(residence):
         }
     }
 
-
 def _serialize_technician(technician):
     return {
         "Code":"200",

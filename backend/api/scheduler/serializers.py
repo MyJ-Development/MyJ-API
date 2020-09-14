@@ -1,12 +1,34 @@
 from rest_framework import serializers
-from ..models import Residence,Order
+from ..models import Residence,Order,Technician,User,Client
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id','email','role']
+
+class ClientSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Client
+        created_by = UserSerializer(read_only=True)
+        fields = '__all__'
 
 class ResidenceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Residence
-        fields = ['id', 'comuna', 'direccion', 'mac', 'pppoe', 'client']
+        client = ClientSerializer(read_only=True)
+        fields = '__all__'
+
+class TechnicianSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Technician
+        fields = ['id', 'rut', 'comuna', 'nombre', 'estado', 'capacidad']
 
 class OrderSerializer(serializers.ModelSerializer):
+    encargado = TechnicianSerializer(read_only=True)
+    client_order = ClientSerializer(read_only=True)
+    created_by = UserSerializer(read_only=True)
+    client_residence = ResidenceSerializer(read_only=True)
     class Meta:
         model = Order
-        fields = ['id', 'tipo', 'prioridad', 'disponibilidad', 'comentario', 'fechaejecucion','estadocliente','estadoticket','mediodepago','monto','created_at','created_by','encargado','client_order','client_residence']
+        fields = '__all__'
+
