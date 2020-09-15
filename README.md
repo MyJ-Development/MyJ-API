@@ -55,7 +55,7 @@ http://IP:PORT/api/scheduler/residence
 http://IP:PORT/api/scheduler/order
 ```javascript
 {
-    "idtipo":"1",
+    "idtipo":"1",                    //ID tipo de instalacion
     "prioridad":"Primera del dia",
     "disponibilidad":"despues 10 am",
     "comentario":"comentarioo",
