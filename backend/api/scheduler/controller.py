@@ -5,7 +5,7 @@ from Crypto import Random
 import json
 import hashlib
 from django.conf import settings
-from ..models import User, Client, Residence,Technician, Order, Tracking
+from ..models import *
 import logging
 from django.utils import timezone
 
@@ -34,9 +34,17 @@ def get_client_by_rut(rut):
     if not rut:
         raise Exception('No client rut provided.')
     try:
-        return Client.objects.get(rut=rut)
+        client = Client.objects.get(rut=rut)
     except Exception:
-        return 0
+        client = None
+    return client
+
+def get_clients():
+    try:
+        client = Client.objects.all()
+    except Exception:
+        client = None
+    return client
     
 def update_client(client):
     client.objects.filter(rut=client.rut).update(email=client.email,
@@ -128,7 +136,9 @@ def get_order_by_id(id):
 
     return order
 
-def get_order_by_date():
+def get_order_by_date(date_end):
+    if not date_end:
+        raise Exception('order rut not provided.')
     try:
         order = Order.objects.filter(created_at__gte=timezone.now().date())
 
@@ -142,9 +152,10 @@ def create_order(order):
     cliente = get_client_by_rut(order['client_order'])
     tecnico = get_technician_by_rut(order['encargado'])
     domicilio = get_residence_by_id(order['domicilio'])
+    ordertype = get_ordertype_by_id(order['idtipo'])
 
     order = Order(
-            tipo=order['tipo'],
+            tipo=ordertype,
             prioridad=order['prioridad'],
             disponibilidad=order['disponibilidad'],
             comentario=order['comentario'],
@@ -183,5 +194,24 @@ def create_tracking(residence):
             client=client)
     residence.save()
     return residence
+
+
+#OrderType
+def get_ordertype_by_id(id):
+    if not id:
+        raise Exception('ordertype id not provided.')
+    try:
+        ordertype = OrderType.objects.get(id=id)
+
+    except Exception:
+        raise Exception("Not found")
+
+    return ordertype
+
+def create_ordertype(ordertype):
+    ordertype = OrderType(
+            descripcion=ordertype['descripcion'])
+    ordertype.save()
+    return ordertype
 
 

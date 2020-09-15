@@ -6,12 +6,8 @@ from rest_framework.permissions import IsAuthenticated
 from ..auth.views import CustomTokenObtainPairSerializer
 from django.http import JsonResponse
 from ..common import Common
-from .controller import get_client_by_rut, update_client, create_client
-from .controller import get_residence_by_rut,create_residence,get_residence_by_id
-from .controller import get_technician_by_rut,create_technician
-from .controller import get_user_by_email
-from .controller import create_order,get_order_by_date
-from .serializers import ResidenceSerializer,OrderSerializer
+from .controller import *
+from .serializers import *
 from rest_framework import serializers
 from django.http import HttpResponse
 from django.http import JsonResponse
@@ -27,7 +23,8 @@ class SchedulerClientView(APIView):
     @staticmethod
     def get(request):
         client = get_client_by_rut(request.data['rut'])
-        return JsonResponse(_serialize_client(client))
+        serialize = ClientSerializer(client)
+        return JsonResponse(serialize.data,safe=False)
 
     @staticmethod
     def put(request):
@@ -61,7 +58,8 @@ class SchedulerClientView(APIView):
             return JsonResponse({ "Code":"303" ,"Response": "Already exists"})
         else:
             client=create_client(data)
-            return JsonResponse(_serialize_client(client))
+            serialize = ClientSerializer(client)
+            return JsonResponse(serialize.data,safe=False)
 
 class SchedulerResidenceView(APIView):
     permission_classes = (IsAuthenticated,)
@@ -97,7 +95,7 @@ class SchedulerOrderView(APIView):
 
     @staticmethod
     def get(request):
-        order = get_order_by_date()
+        order = get_order_by_date(request.data['date_end'])
         serialize = OrderSerializer(order,many=True)
         return JsonResponse(serialize.data,safe=False)
     
@@ -105,7 +103,24 @@ class SchedulerOrderView(APIView):
     def post(request):
         data = common_methods.get_request_data(request)
         order=create_order(data)
-        return JsonResponse(_serialize_order(order))
+        serialize = OrderSerializer(order)
+        return JsonResponse(serialize.data,safe=False)
+
+class SchedulerOrderTypeView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    @staticmethod
+    def get(request):
+        ordertype = get_ordertype_by_id(request.data['idtipo'])
+        serialize = OrderTypeSerializer(ordertype)
+        return JsonResponse(serialize.data,safe=False)
+    
+    @staticmethod
+    def post(request):
+        data = common_methods.get_request_data(request)
+        ordertype=create_ordertype(data)
+        serialize = OrderTypeSerializer(ordertype)
+        return JsonResponse(serialize.data,safe=False)
 
 
 def _serialize_client(client):

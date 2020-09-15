@@ -32,7 +32,7 @@ class Client(models.Model):
     contacto2 = models.CharField(blank=True,max_length=13)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True,blank=True)
-    created_by = models.ForeignKey(User,on_delete=models.DO_NOTHING,related_name='client2createdby')
+    created_by = models.ForeignKey(User,blank=True,on_delete=models.DO_NOTHING)
     updated_by = models.ForeignKey(User,on_delete=models.DO_NOTHING,related_name='client2updatedby')
 
 
@@ -43,6 +43,10 @@ class Residence(models.Model):
     mac = models.CharField(blank=True,max_length=12)
     pppoe = models.CharField(blank=True,max_length=50)
     client = models.ForeignKey(Client,on_delete=models.DO_NOTHING)
+
+class OrderType(models.Model):
+    id = models.AutoField(primary_key=True)
+    descripcion = models.CharField(max_length=50)
 
 class Technician(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -73,7 +77,7 @@ ticket_estados = (
 
 class Order(models.Model):
     id = models.AutoField(primary_key=True)
-    tipo = models.CharField(max_length=50)
+    tipo = models.ForeignKey(OrderType,blank=True,on_delete=models.DO_NOTHING)
     prioridad = models.CharField(max_length=50)
     disponibilidad = models.CharField(blank=True,max_length=50)
     comentario = models.CharField(max_length=300,blank=True)

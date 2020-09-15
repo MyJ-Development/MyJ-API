@@ -55,7 +55,7 @@ http://IP:PORT/api/scheduler/residence
 http://IP:PORT/api/scheduler/order
 ```javascript
 {
-    "tipo":"Instalacion",
+    "idtipo":"1",
     "prioridad":"Primera del dia",
     "disponibilidad":"despues 10 am",
     "comentario":"comentarioo",
@@ -71,6 +71,13 @@ http://IP:PORT/api/scheduler/order
 }
 ```
 
+http://IP:PORT/api/scheduler/typeorder
+```javascript
+{ 
+    "descripcion":"instalacion" 
+}
+```
+
 ### Peticiones GET Todas las peticiones requieren un bearer token (access_token) otorgado al hacer login
 
 http://IP:PORT/api/scheduler/order
@@ -80,13 +87,19 @@ http://IP:PORT/api/scheduler/order
 }
 ```
 
-http://10.19.11.9:3003/api/scheduler/technician
+http://IP:PORT/api/scheduler/typeorder
+```javascript
+{ 
+    "idtipo":"1" 
+}
+```
+
+
+http://IP:PORT/api/scheduler/technician
 ```javascript
 {
     "rut":"rut"
 }
-
-
 ```
 
 http://IP:PORT/api/scheduler/client
