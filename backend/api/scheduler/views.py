@@ -97,7 +97,7 @@ class SchedulerOrderView(APIView):
 
     @staticmethod
     def get(request):
-        order = get_order_by_date(request.data['date_end'])
+        order = get_order_by_date()
         serialize = OrderSerializer(order,many=True)
         return JsonResponse(serialize.data,safe=False)
     

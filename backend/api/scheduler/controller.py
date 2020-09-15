@@ -128,9 +128,7 @@ def get_order_by_id(id):
 
     return order
 
-def get_order_by_date(date_end):
-    if not date_end:
-        raise Exception('order rut not provided.')
+def get_order_by_date():
     try:
         order = Order.objects.filter(created_at__gte=timezone.now().date())
 
