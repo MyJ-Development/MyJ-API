@@ -202,7 +202,13 @@ def get_ordertype_by_id(id):
         raise Exception('ordertype id not provided.')
     try:
         ordertype = OrderType.objects.get(id=id)
+    except Exception:
+        raise Exception("Not found")
+    return ordertype
 
+def get_ordertypes():
+    try:
+        ordertype = OrderType.objects.filter()
     except Exception:
         raise Exception("Not found")
 

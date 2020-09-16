@@ -111,8 +111,8 @@ class SchedulerOrderTypeView(APIView):
 
     @staticmethod
     def get(request):
-        ordertype = get_ordertype_by_id(request.data['idtipo'])
-        serialize = OrderTypeSerializer(ordertype)
+        ordertype=get_ordertypes()
+        serialize = OrderTypeSerializer(ordertype,many=True)
         return JsonResponse(serialize.data,safe=False)
     
     @staticmethod
@@ -121,6 +121,13 @@ class SchedulerOrderTypeView(APIView):
         ordertype=create_ordertype(data)
         serialize = OrderTypeSerializer(ordertype)
         return JsonResponse(serialize.data,safe=False)
+
+    @staticmethod
+    def index(request):        
+        ordertype = get_ordertype_by_id(request.data['idtipo'])
+        serialize = OrderTypeSerializer(ordertype)
+        return JsonResponse(serialize.data,safe=False)
+    
 
 
 def _serialize_client(client):
