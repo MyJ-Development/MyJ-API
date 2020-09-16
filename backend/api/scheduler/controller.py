@@ -136,12 +136,11 @@ def get_order_by_id(id):
 
     return order
 
-def get_order_by_date(date_end):
+def get_order_by_date(date_init,date_end):
     if not date_end:
         raise Exception('order rut not provided.')
     try:
-        order = Order.objects.filter(created_at__gte=timezone.now().date())
-
+        order = Order.objects.filter(fechaejecucion__range=[date_init,date_end]).order_by("fechaejecucion")
     except Exception:
         raise Exception("Not found")
 

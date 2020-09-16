@@ -56,6 +56,8 @@ class Technician(models.Model):
     estado = models.CharField(blank=True,max_length=50)
     capacidad = models.IntegerField(blank=True)
 
+
+
 cliente_estados = (
     ("No aplicable","no aplicable"),
     ("Confirmado","confirmado"),
@@ -81,7 +83,7 @@ class Order(models.Model):
     prioridad = models.CharField(max_length=50)
     disponibilidad = models.CharField(blank=True,max_length=50)
     comentario = models.CharField(max_length=300,blank=True)
-    fechaejecucion = models.DateTimeField(blank=False)
+    fechaejecucion = models.DateField(blank=False)
     estadocliente = models.CharField(max_length=30,choices=cliente_estados,default="No aplicable")
     estadoticket =  models.CharField(max_length=30,choices=ticket_estados,default="No aplicable")
     mediodepago = models.CharField(max_length=30,blank=True)
