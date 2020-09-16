@@ -22,7 +22,7 @@ class SchedulerClientView(APIView):
 
     @staticmethod
     def get(request):
-        client = get_client_by_rut(request.data['rut'])
+        client = get_client_by_rut(request.GET.get('rut'))
         serialize = ClientSerializer(client)
         return JsonResponse(serialize.data,safe=False)
 
@@ -66,7 +66,7 @@ class SchedulerResidenceView(APIView):
 
     @staticmethod
     def get(request):
-        residence = get_residence_by_rut(request.data['rut'])
+        residence = get_residence_by_rut(request.GET.get('rut'))
         serialize = ResidenceSerializer(residence,many=True)
         return JsonResponse(serialize.data,safe=False)
 
@@ -81,7 +81,7 @@ class SchedulerTechnicianView(APIView):
 
     @staticmethod
     def get(request):
-        technician = get_technician_by_rut(request.data['rut'])
+        technician = get_technician_by_rut(request.GET.get('rut'))
         return JsonResponse(_serialize_technician(technician))
     
     @staticmethod
@@ -95,7 +95,7 @@ class SchedulerOrderView(APIView):
 
     @staticmethod
     def get(request):
-        order = get_order_by_date(request.data['date_init'],request.data['date_end'])
+        order = get_order_by_date(request.GET.get('date_init'),request.GET.get('date_end'))
         serialize = OrderSerializer(order,many=True)
         return JsonResponse(serialize.data,safe=False)
     
@@ -128,8 +128,6 @@ class SchedulerOrderTypeView(APIView):
         serialize = OrderTypeSerializer(ordertype)
         return JsonResponse(serialize.data,safe=False)
     
-
-
 def _serialize_client(client):
     return {
         "Code":"200",
