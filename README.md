@@ -89,9 +89,7 @@ http://IP:PORT/api/scheduler/order
 
 http://IP:PORT/api/scheduler/typeorder
 ```javascript
-{ 
-    "idtipo":"1" 
-}
+    SIN PARAMETROS
 ```
 
 
