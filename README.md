@@ -80,13 +80,6 @@ http://IP:PORT/api/scheduler/typeorder
 
 ### Peticiones GET Todas las peticiones requieren un bearer token (access_token) otorgado al hacer login
 
-http://IP:PORT/api/scheduler/order
-```javascript
-{
-    "id":"1"
-}
-```
-
 http://IP:PORT/api/scheduler/typeorder
 ```javascript
     SIN PARAMETROS
@@ -114,10 +107,11 @@ http://IP:PORT/api/scheduler/residence
 }
 ```
 
-http://IP:PORT/api/scheduler/order //Por ahora devuelve todas las ordenes previas a hoy
+http://IP:PORT/api/scheduler/order
 ```javascript
 {
-    "date_end":"2020-05-05T15:23:00"
+    "date_init":"2020-05-10"
+    "date_end":"2020-05-12"
 }
 ```
 
