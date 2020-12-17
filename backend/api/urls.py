@@ -16,14 +16,14 @@ Including another URLconf
 from django.conf.urls import url
 from .auth.views import AuthView
 from .user.views import UserView, UserSettings
-from .scheduler.views import SchedulerClientView,SchedulerResidenceView,SchedulerTechnicianView,SchedulerOrderView,SchedulerOrderTypeView
-
+from .scheduler.views import SchedulerClientView,SchedulerResidenceView,SchedulerTechnicianView,SchedulerOrderView,SchedulerOrderTypeView,OrderByClientView
 urlpatterns = [
     url('scheduler/client', SchedulerClientView.as_view(), name='Clients'),
     url('scheduler/residence', SchedulerResidenceView.as_view(), name='Residences'),
     url('scheduler/technician', SchedulerTechnicianView.as_view(), name='Technicians'),
     url('scheduler/order', SchedulerOrderView.as_view(), name='Orders'),
     url('scheduler/typeorder', SchedulerOrderTypeView.as_view(), name='OrderTypes'),
+    url('scheduler/cl-orders', OrderByClientView.as_view(), name='OrderByClient'),
     url('users/current', UserView.as_view(), name='Current user'),
     url('auth/login', AuthView.login, name='User login'),
     url('auth/sign-up', AuthView.sign_up, name='Sign up a new user'),

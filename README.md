@@ -89,7 +89,7 @@ http://IP:PORT/api/scheduler/typeorder
 http://IP:PORT/api/scheduler/technician
 ```javascript
 {
-    "rut":"rut"
+    SIN PARAMETROS
 }
 ```
 
@@ -112,6 +112,13 @@ http://IP:PORT/api/scheduler/order
 {
     "date_init":"2020-05-10"
     "date_end":"2020-05-12"
+}
+```
+
+http://IP:PORT/api/scheduler/cl-orders
+```javascript
+{
+    "rut":"18839285-7"
 }
 ```
 

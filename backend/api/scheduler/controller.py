@@ -114,6 +114,12 @@ def get_technician_by_rut(rut):
     except Exception:
         return None
 
+def get_technicians():
+    try:
+        return Technician.objects.all()
+    except Exception:
+        return None
+
 def create_technician(technician):
     technician = Technician(
             rut=technician['rut'],
@@ -138,12 +144,23 @@ def get_order_by_id(id):
 
 def get_order_by_date(date_init,date_end):
     if not date_end:
-        raise Exception('order rut not provided.')
+        raise Exception('date_end not provided.')
     try:
+        
         order = Order.objects.filter(fechaejecucion__range=[date_init,date_end]).order_by("fechaejecucion")
     except Exception:
         raise Exception("Not found")
 
+    return order
+
+def get_order_by_rut(rut):
+    if not rut:
+        raise Exception('rut not provided.')
+    try:
+        order = Order.objects.filter(client_order__rut__contains=rut)
+    except Exception:
+        raise Exception("Not found")
+    
     return order
 
 def create_order(order):

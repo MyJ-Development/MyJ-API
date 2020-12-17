@@ -81,8 +81,10 @@ class SchedulerTechnicianView(APIView):
 
     @staticmethod
     def get(request):
-        technician = get_technician_by_rut(request.GET.get('rut'))
-        return JsonResponse(_serialize_technician(technician))
+        #technician = get_technician_by_rut(request.GET.get('rut'))
+        technician = get_technicians()
+        serialize = TechnicianSerializer(technician,many=True)
+        return JsonResponse(serialize.data,safe=False)
     
     @staticmethod
     def post(request):
@@ -127,7 +129,18 @@ class SchedulerOrderTypeView(APIView):
         ordertype = get_ordertype_by_id(request.data['idtipo'])
         serialize = OrderTypeSerializer(ordertype)
         return JsonResponse(serialize.data,safe=False)
-    
+
+
+class OrderByClientView(APIView):
+
+    @staticmethod
+    def get(request):
+        order = get_order_by_rut(request.GET.get('rut'))
+        serialize = OrderSerializer(order,many=True)
+        return JsonResponse(serialize.data,safe=False)
+
+
+
 def _serialize_client(client):
     return {
         "Code":"200",

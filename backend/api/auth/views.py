@@ -10,8 +10,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.backends import TokenBackend
 
 from ..common import Common
-from ..user.controller import get_user_by_email, get_user_by_id, check_password, \
-    check_user_exists, create_user, send_password_reset_link, reset_user_password
+from ..user.controller import *
 from ..models import User
 
 logger = logging.getLogger(__name__)
