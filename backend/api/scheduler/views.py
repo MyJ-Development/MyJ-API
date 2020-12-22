@@ -66,7 +66,16 @@ class SchedulerResidenceView(APIView):
 
     @staticmethod
     def get(request):
-        residence = get_residence_by_rut(request.GET.get('rut'))
+        residence = ""
+        try: 
+            residence = get_residence_by_rut(request.GET.get('rut'))
+        except:
+            residence = ""
+            pass
+        if(residence):
+            pass
+        else:
+            residence = get_residence_by_rut(request.data['rut'])
         serialize = ResidenceSerializer(residence,many=True)
         return JsonResponse(serialize.data,safe=False)
 
@@ -108,6 +117,14 @@ class SchedulerOrderView(APIView):
         serialize = OrderSerializer(order)
         return JsonResponse(serialize.data,safe=False)
 
+    @staticmethod
+    def put(request):
+        serializer = OrderSerializer(data=request.data)
+        data = common_methods.get_request_data(request)
+        order=create_order(data)
+        serialize = OrderSerializer(order)
+        return JsonResponse(serialize.data,safe=False)
+
 class SchedulerOrderTypeView(APIView):
     permission_classes = (IsAuthenticated,)
 
@@ -132,10 +149,34 @@ class SchedulerOrderTypeView(APIView):
 
 
 class OrderByClientView(APIView):
-
+    
     @staticmethod
     def get(request):
-        order = get_order_by_rut(request.GET.get('rut'))
+        filter_rut_cliente = ""
+        filter_id_orden = ""
+        filter_nombre_encargado = ""
+        date_init = request.GET.get('date_init')
+        date_end = request.GET.get('date_end')
+        try:
+            filter_rut_cliente = request.GET.get('rut_cliente')
+        except:
+            pass
+        try:
+            filter_id_orden = request.GET.get('id_orden')
+        except:
+            pass
+        try:
+            filter_nombre_encargado = request.GET.get('nombre_encargado')
+        except:
+            pass
+        
+        if (filter_rut_cliente):
+            order = get_order_by_rut_filter(filter_rut_cliente,date_init,date_end)
+        if (filter_id_orden):
+            order = get_order_by_id_orden_filter(filter_id_orden,date_init,date_end)
+        if (filter_nombre_encargado):
+            order = get_order_by_nombre_encargado_filter(filter_nombre_encargado,date_init,date_end)
+
         serialize = OrderSerializer(order,many=True)
         return JsonResponse(serialize.data,safe=False)
 

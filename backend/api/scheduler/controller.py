@@ -160,8 +160,35 @@ def get_order_by_rut(rut):
         order = Order.objects.filter(client_order__rut__contains=rut)
     except Exception:
         raise Exception("Not found")
-    
     return order
+
+def get_order_by_rut_filter(rut,date_init,date_end):
+    if not rut and date_init and date_end:
+        raise Exception('rut | date_init | date_end not provided.')
+    try:
+        order = Order.objects.filter(fechaejecucion__range=[date_init,date_end],client_order__rut__contains=rut)
+    except Exception:
+        raise Exception("Not found")
+    return order
+
+def get_order_by_id_orden_filter(id_orden,date_init,date_end):
+    if not id_orden and date_init and date_end:
+        raise Exception('id_orden | date_init | date_end not provided.')
+    try:
+        order = Order.objects.filter(fechaejecucion__range=[date_init,date_end],id__contains=id_orden)
+    except Exception:
+        raise Exception("Not found")
+    return order
+
+def get_order_by_nombre_encargado_filter(nombre_encargado,date_init,date_end):
+    if not nombre_encargado and date_init and date_end:
+        raise Exception('nombre_encargado | date_init | date_end not provided.')
+    try:
+        order = Order.objects.filter(fechaejecucion__range=[date_init,date_end],encargado__nombre__contains=nombre_encargado)
+    except Exception:
+        raise Exception("Not found")
+    return order
+
 
 def create_order(order):
     user = get_user_by_email(order['created_by'])
