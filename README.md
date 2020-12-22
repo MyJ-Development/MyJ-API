@@ -118,7 +118,7 @@ http://IP:PORT/api/scheduler/order
 http://IP:PORT/api/scheduler/cl-orders
 ```javascript
 {
-    "rut_cliente":"18839285-7", #id_orden #nombre_encargado
+    "rut_cliente":"18839285-7", #id_orden #nombre_encargado #domicilio
     "date_init":"2018-01-01",
     "date_end":"2021-01-01"
 }
