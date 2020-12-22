@@ -118,7 +118,9 @@ http://IP:PORT/api/scheduler/order
 http://IP:PORT/api/scheduler/cl-orders
 ```javascript
 {
-    "rut":"18839285-7"
+    "rut":"18839285-7",
+    "date_init":"2018-01-01",
+    "date_end":"2021-01-01"
 }
 ```
 

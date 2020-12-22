@@ -155,8 +155,13 @@ class OrderByClientView(APIView):
         filter_rut_cliente = ""
         filter_id_orden = ""
         filter_nombre_encargado = ""
-        date_init = request.GET.get('date_init')
-        date_end = request.GET.get('date_end')
+        
+        try:
+            date_init = request.GET.get('date_init')
+            date_end = request.GET.get('date_end')
+        except:
+            pass
+
         try:
             filter_rut_cliente = request.GET.get('rut_cliente')
         except:
@@ -173,7 +178,7 @@ class OrderByClientView(APIView):
         if (filter_rut_cliente):
             order = get_order_by_rut_filter(filter_rut_cliente,date_init,date_end)
         if (filter_id_orden):
-            order = get_order_by_id_orden_filter(filter_id_orden,date_init,date_end)
+            order = get_order_by_id_orden_filter(filter_id_orden)
         if (filter_nombre_encargado):
             order = get_order_by_nombre_encargado_filter(filter_nombre_encargado,date_init,date_end)
 

@@ -171,11 +171,11 @@ def get_order_by_rut_filter(rut,date_init,date_end):
         raise Exception("Not found")
     return order
 
-def get_order_by_id_orden_filter(id_orden,date_init,date_end):
-    if not id_orden and date_init and date_end:
-        raise Exception('id_orden | date_init | date_end not provided.')
+def get_order_by_id_orden_filter(id_orden):
+    if not id_orden:
+        raise Exception('id_orden not provided.')
     try:
-        order = Order.objects.filter(fechaejecucion__range=[date_init,date_end],id__contains=id_orden)
+        order = Order.objects.filter(id__contains=id_orden)
     except Exception:
         raise Exception("Not found")
     return order
