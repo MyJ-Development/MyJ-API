@@ -175,7 +175,7 @@ def get_order_by_id_orden_filter(id_orden):
     if not id_orden:
         raise Exception('id_orden not provided.')
     try:
-        order = Order.objects.filter(id__contains=id_orden)
+        order = Order.objects.filter(id=id_orden)
     except Exception:
         raise Exception("Not found")
     return order
@@ -191,12 +191,18 @@ def get_order_by_nombre_encargado_filter(nombre_encargado,date_init,date_end):
 
 def get_order_by_domicilio_filter(domicilio,date_init,date_end):
     
-    if not domicilio and date_init and date_end:
-        raise Exception('domicilio | date_init | date_end not provided.')
-    try:
-        order = Order.objects.filter(fechaejecucion__range=[date_init,date_end],client_residence__direccion__contains=domicilio)
-    except Exception:
-        raise Exception("Not found")
+    if not domicilio:
+        raise Exception('domicilio not provided.')
+    if not date_init and date_end:
+        try:
+            order = Order.objects.filter(fechaejecucion__range=[date_init,date_end],client_residence__direccion__contains=domicilio)
+        except Exception:
+            raise Exception("Not found")
+    else:
+        try:
+            order = Order.objects.filter(client_residence__direccion__contains=domicilio)
+        except Exception:
+            raise Exception("Not found")
     return order
 
 def create_order(order):
@@ -223,6 +229,28 @@ def create_order(order):
         
     order.save()
     return order
+
+def update_order(order):
+    order_updated = Order.objects.get(id=order['id'])
+    user = get_user_by_email(order['created_by'])
+    cliente = get_client_by_rut(order['client_order'])
+    tecnico = get_technician_by_rut(order['encargado'])
+    domicilio = get_residence_by_id(order['domicilio'])
+    ordertype = get_ordertype_by_id(order['idtipo'])
+    order_updated.tipo=ordertype
+    order_updated.prioridad=order['prioridad']
+    order_updated.disponibilidad=order['disponibilidad']
+    order_updated.comentario=order['comentario']
+    order_updated.fechaejecucion=order['fechaejecucion']
+    order_updated.estadocliente=order['estadocliente']
+    order_updated.estadoticket=order['estadoticket']
+    order_updated.mediodepago=order['mediodepago']
+    order_updated.monto=order['monto']
+    order_updated.created_by=user
+    order_updated.encargado=tecnico
+    order_updated.client_order=cliente
+    order_updated.client_residence=domicilio
+    return order_updated
 
 #Tracking
 def get_tracking_by_rut(rut):

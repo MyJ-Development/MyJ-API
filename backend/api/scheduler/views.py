@@ -119,9 +119,8 @@ class SchedulerOrderView(APIView):
 
     @staticmethod
     def put(request):
-        serializer = OrderSerializer(data=request.data)
         data = common_methods.get_request_data(request)
-        order=create_order(data)
+        order = update_order(data)
         serialize = OrderSerializer(order)
         return JsonResponse(serialize.data,safe=False)
 
@@ -155,7 +154,8 @@ class OrderByClientView(APIView):
         filter_rut_cliente = ""
         filter_id_orden = ""
         filter_nombre_encargado = ""
-        
+        date_init = ""
+        date_end = ""
         try:
             date_init = request.GET.get('date_init')
             date_end = request.GET.get('date_end')

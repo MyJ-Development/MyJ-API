@@ -124,3 +124,24 @@ http://IP:PORT/api/scheduler/cl-orders
 }
 ```
 
+### Peticiones put Todas las peticiones requieren un bearer token (access_token) otorgado al hacer login
+
+http://IP:PORT/api/scheduler/order
+```javascript
+{
+    "id":"40",
+    "idtipo":"1",            
+    "prioridad":"Primera del dia",
+    "disponibilidad":"despues 10 am",
+    "comentario":"comentarioo",
+    "fechaejecucion":"2020-05-3",
+    "estadocliente": "No aplicable",
+    "estadoticket": "No aplicable",
+    "mediodepago": "Imported",
+    "monto": "0",
+    "created_by":"test@test.test", 
+    "encargado":"SINRUT2",  
+    "client_order": "7990228-4",
+    "domicilio": "1"
+}
+```

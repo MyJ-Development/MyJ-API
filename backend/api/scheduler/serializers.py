@@ -28,12 +28,23 @@ class TechnicianSerializer(serializers.ModelSerializer):
         model = Technician
         fields = ['id', 'rut', 'comuna', 'nombre', 'estado', 'capacidad']
 
+
 class OrderSerializer(serializers.ModelSerializer):
     encargado = TechnicianSerializer(read_only=True)
     client_order = ClientSerializer(read_only=True)
     created_by = UserSerializer(read_only=True)
     client_residence = ResidenceSerializer(read_only=True)
     tipo = OrderTypeSerializer(read_only=True)
+    #tracking = TrackingSerializer(read_only=True)
+
     class Meta:
         model = Order
         fields = '__all__'
+
+'''
+class TrackingSerializer(serializers.ModelSerializer):
+    created_by = UserSerializer(read_only=True)
+    class Meta:
+        model = Tracking
+        fields = '__all__'
+'''

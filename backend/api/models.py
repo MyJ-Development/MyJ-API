@@ -77,6 +77,12 @@ ticket_estados = (
     ("Cerrado no terminado","cerrado no terminado")
 )
 
+class Tracking(models.Model):
+    id = models.AutoField(primary_key=True)
+    comentario = models.CharField(max_length=300)
+    created_by = models.ForeignKey(User,on_delete=models.CASCADE,related_name='tracking2created')
+    created_at = models.DateTimeField(auto_now_add=True)
+
 class Order(models.Model):
     id = models.AutoField(primary_key=True)
     tipo = models.ForeignKey(OrderType,blank=True,on_delete=models.DO_NOTHING)
@@ -93,12 +99,4 @@ class Order(models.Model):
     encargado = models.ForeignKey(Technician,blank=True,on_delete=models.DO_NOTHING)
     client_order = models.ForeignKey(Client,blank=True,on_delete=models.DO_NOTHING)
     client_residence = models.ForeignKey(Residence,blank=True,on_delete=models.DO_NOTHING,default="0")
-
-class Tracking(models.Model):
-    id = models.AutoField(primary_key=True)
-    comentario = models.CharField(max_length=300)
-    created_by = models.ForeignKey(Order,on_delete=models.CASCADE,related_name='tracking2created')
-    created_at = models.DateTimeField(auto_now_add=True)
-
-
-
+    #tracking = models.ManyToManyField(Tracking,blank=True,related_name="orders")
