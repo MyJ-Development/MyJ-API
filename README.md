@@ -145,3 +145,16 @@ http://IP:PORT/api/scheduler/order
     "domicilio": "1"
 }
 ```
+
+http://IP:PORT/api/scheduler/client
+```javascript
+{
+    "rut":"9876543211",
+    "email":"asdas@asda.com",
+    "nombre":"testing",
+    "contacto1":"1231233",
+    "contacto2":"1231232",
+    "created_by": "test@test.test",
+    "updated_by": "test@test.test"
+}
+```

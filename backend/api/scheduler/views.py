@@ -28,27 +28,10 @@ class SchedulerClientView(APIView):
 
     @staticmethod
     def put(request):
-        client = get_client_by_rut(request.client.rut)
         data = common_methods.get_request_data(request)
-        client.email = data['email']
-        client.first_name = data['firstName']
-        client.last_name = data['lastName']
-        client.login = data['login']
-        client.age = data['age']
-        client.street = data['address']['street']
-        client.city = data['address']['city']
-        client.zip = data['address']['zipCode']
-        client.role = data['role']
-
-        update_client(client)
-
-        # generate new tokens because client's data inside prvious generated token is changed
-        refresh = CustomTokenObtainPairSerializer.get_token(client)
-        return JsonResponse( {
-            'access_token': str(refresh.access_token),
-            'expires_in': str(refresh.access_token.lifetime.seconds),
-            'refresh_token': str(refresh)
-        })
+        client = update_client(data)
+        serialize = ClientSerializer(client)
+        return JsonResponse(serialize.data,safe=False)
     
     @staticmethod
     def post(request):

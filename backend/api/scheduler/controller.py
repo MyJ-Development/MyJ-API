@@ -69,6 +69,18 @@ def create_client(client):
     client.save()
     return client
 
+def update_client(client):
+    client_updated = Client.objects.get(rut=client['rut'])
+    user = get_user_by_email(client['created_by'])
+    client_updated.rut=client['rut']
+    client_updated.nombre=client['nombre']
+    client_updated.email=client['email']
+    client_updated.contacto1=client['contacto1']
+    client_updated.contacto2=client['contacto2']
+    client_updated.created_by=user
+    client_updated.updated_by=user
+    client_updated.save()
+    return client_updated
 
 #Residence
 def get_residence_by_rut(rut):
@@ -250,6 +262,7 @@ def update_order(order):
     order_updated.encargado=tecnico
     order_updated.client_order=cliente
     order_updated.client_residence=domicilio
+    order_updated.save()
     return order_updated
 
 #Tracking
