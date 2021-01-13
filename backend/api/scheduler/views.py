@@ -58,7 +58,7 @@ class SchedulerResidenceView(APIView):
         if(residence):
             pass
         else:
-            residence = get_residence_by_rut(request.data['rut'])
+            residence = get_residence_by_rut(request.GET.get('rut'))
         serialize = ResidenceSerializer(residence,many=True)
         return JsonResponse(serialize.data,safe=False)
 

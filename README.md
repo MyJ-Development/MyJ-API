@@ -48,7 +48,8 @@ http://IP:PORT/api/scheduler/residence
     "comuna":"Comuna",
     "direccion":"direccion",
     "mac":"mac",
-    "pppoe":"pppoe"
+    "pppoe":"pppoe",
+    "client_rut": "123456789"
 }
 ```
 
