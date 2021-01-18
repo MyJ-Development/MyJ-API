@@ -130,6 +130,7 @@ http://IP:PORT/api/scheduler/cl-orders
 http://IP:PORT/api/scheduler/order
 ```javascript
 {
+    #Se deben enviar todos los campos, aunque no se quiera modificar
     "id":"40",
     "idtipo":"1",            
     "prioridad":"Primera del dia",
@@ -150,6 +151,7 @@ http://IP:PORT/api/scheduler/order
 http://IP:PORT/api/scheduler/client
 ```javascript
 {
+    #Se deben enviar todos los campos, aunque no se quieran modificar
     "rut":"9876543211",
     "email":"asdas@asda.com",
     "nombre":"testing",
@@ -159,3 +161,17 @@ http://IP:PORT/api/scheduler/client
     "updated_by": "test@test.test"
 }
 ```
+
+
+http://IP:PORT/api/scheduler/residence
+```javascript
+{
+    #Se deben enviar todos los campos, aunque no se quieran modificar
+    "id":"3209",
+    "comuna":"testing",
+    "mac":"Imported",
+    "pppoe":"Imported",
+    "direccion":"pedro rivero 1530 E45"
+}
+```
+
