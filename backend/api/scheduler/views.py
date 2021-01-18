@@ -51,7 +51,7 @@ class SchedulerResidenceView(APIView):
     def get(request):
         residence = ""
         try: 
-            residence = get_residence_by_rut(request.GET.get('rut'))
+            residence = get_residence_by_rut(request.data['rut'])
         except:
             residence = ""
             pass
@@ -67,6 +67,13 @@ class SchedulerResidenceView(APIView):
         data = common_methods.get_request_data(request)
         residence=create_residence(data)
         return JsonResponse(_serialize_residence(residence))
+
+    @staticmethod
+    def put(request):
+        data = common_methods.get_request_data(request)
+        residence = update_residence(data)
+        serialize = ResidenceSerializer(residence)
+        return JsonResponse(serialize.data,safe=False)
 
 class SchedulerTechnicianView(APIView):
     permission_classes = (IsAuthenticated,)

@@ -117,6 +117,15 @@ def create_residence(residence):
     residence.save()
     return residence
 
+def update_residence(residence):
+    residence_updated = Residence.objects.get(id=residence['id'])
+    residence_updated.comuna=residence['comuna']
+    residence_updated.direccion=residence['direccion']
+    residence_updated.mac=residence['mac']
+    residence_updated.pppoe=residence['pppoe']
+    residence_updated.save()
+    return residence_updated
+
 #Technician
 def get_technician_by_rut(rut):
     if not rut:
