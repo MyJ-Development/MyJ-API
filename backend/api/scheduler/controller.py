@@ -202,10 +202,12 @@ def get_order_by_id_orden_filter(id_orden):
     return order
 
 def get_order_by_nombre_encargado_filter(nombre_encargado,date_init,date_end):
+    order = ""
     if not nombre_encargado and date_init and date_end:
         raise Exception('nombre_encargado | date_init | date_end not provided.')
     try:
         order = Order.objects.filter(fechaejecucion__range=[date_init,date_end],encargado__nombre__contains=nombre_encargado)
+
     except Exception:
         raise Exception("Not found")
     return order

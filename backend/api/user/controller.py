@@ -47,16 +47,13 @@ def check_password(user, password):
     return handler.verify(password, user.password) if user else False
 
 
-def create_user(email, password, fullname, login='', age=18, street='',
+def create_user(email, password, name, rut, login='', age=18, street='',
                 city='', zip='', role='user'):
-    res = fullname.split(' ')
-    first_name = '' if len(res) == 1 else res[0]
-    last_name = res[0] if len(res) == 1 else ' '.join(res[1:])
 
     user = User(email=email,
                 password=generate_password_hash(password),
-                first_name=first_name,
-                last_name=last_name,
+                name=name,
+                rut=rut,
                 login=login,
                 age=age,
                 street=street,

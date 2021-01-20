@@ -96,7 +96,25 @@ class SchedulerOrderView(APIView):
 
     @staticmethod
     def get(request):
-        order = get_order_by_date(request.GET.get('date_init'),request.GET.get('date_end'))
+        valid = 0
+        try: 
+            valid = request.GET.get('date_init')
+            valid = request.GET.get('date_end')
+            valid = 1
+        except:
+            valid = 0
+        if(valid):
+            order = get_order_by_date(request.GET.get('date_init'),request.GET.get('date_end'))
+        
+        try:
+            valid = request.GET.get('email')
+            valid = 1
+        except:
+            valid =  0
+
+        if(valid):
+            order = get_order_by_email(request.GET.get('email'))
+
         serialize = OrderSerializer(order,many=True)
         return JsonResponse(serialize.data,safe=False)
     
@@ -141,6 +159,7 @@ class OrderByClientView(APIView):
     
     @staticmethod
     def get(request):
+        order = ""
         filter_rut_cliente = ""
         filter_id_orden = ""
         filter_nombre_encargado = ""
@@ -149,6 +168,8 @@ class OrderByClientView(APIView):
         try:
             date_init = request.GET.get('date_init')
             date_end = request.GET.get('date_end')
+            #date_init = request.data['date_init']
+            #date_end = request.data['date_end']
         except:
             pass
         try:
@@ -159,7 +180,8 @@ class OrderByClientView(APIView):
             filter_id_orden = request.GET.get('id_orden')
         except:
             pass
-        try:
+        try:    
+            #filter_nombre_encargado = request.data['nombre_encargado']
             filter_nombre_encargado = request.GET.get('nombre_encargado')
         except:
             pass
@@ -167,7 +189,7 @@ class OrderByClientView(APIView):
             filter_domicilio = request.GET.get('domicilio')
         except:
             pass
-        
+
         if (filter_rut_cliente):
             order = get_order_by_rut_filter(filter_rut_cliente)
         if (filter_id_orden):

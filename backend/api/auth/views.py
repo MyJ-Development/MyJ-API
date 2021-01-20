@@ -66,7 +66,7 @@ class AuthView(APIView):
             return JsonResponse({'message': 'User with this email already exists'},
                                 status=status.HTTP_400_BAD_REQUEST)
 
-        create_user(data['email'], data['password'], data['fullName'])
+        create_user(data['email'], data['password'], data['name'],data['rut'])
 
         refresh = CustomTokenObtainPairSerializer.get_token(
             get_user_by_email(email=data['email']))

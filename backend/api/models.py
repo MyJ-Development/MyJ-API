@@ -6,8 +6,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     id = models.IntegerField(unique=True, primary_key=True)
     email = models.CharField(max_length=30) 
     password = models.CharField(max_length=100)
-    first_name = models.CharField(default='', max_length=15)
-    last_name = models.CharField(default='', max_length=15)
+    name = models.CharField(default='', max_length=100)
+    rut = models.CharField(default='', max_length=20)
     login = models.CharField(max_length=15)
     age = models.IntegerField()
     street = models.CharField(blank=True, max_length=255)
@@ -55,6 +55,7 @@ class Technician(models.Model):
     nombre = models.CharField(max_length=50)
     estado = models.CharField(blank=True,max_length=50)
     capacidad = models.IntegerField(blank=True)
+    
 
 
 
@@ -82,6 +83,7 @@ class Tracking(models.Model):
     comentario = models.CharField(max_length=300)
     created_by = models.ForeignKey(User,on_delete=models.CASCADE,related_name='tracking2created')
     created_at = models.DateTimeField(auto_now_add=True)
+    #order = models.models.ForeignKey(Order, blank=True, on_delete=models.DO_NOTHING)
 
 class Order(models.Model):
     id = models.AutoField(primary_key=True)

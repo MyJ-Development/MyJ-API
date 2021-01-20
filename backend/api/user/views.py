@@ -78,17 +78,11 @@ def _serialize_user(user):
     return {
         'id': user.id,
         'email': user.email,
-        'firstName': user.first_name,
-        'lastName': user.last_name,
+        'name': user.name,
+        'rut': user.rut,
         'login': user.login,
-        'age': user.age,
         'role': user.role,
         'settings': {
             'themeName': user.theme
-        },
-        'address': {
-            'street': user.street,
-            'city': user.city,
-            'zipCode': user.zip,
         }
     }
