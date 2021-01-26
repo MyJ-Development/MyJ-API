@@ -194,8 +194,8 @@ class SchedulerTechnicianView(APIView):
                 }
         """
         data = common_methods.get_request_data(request)
-        typeorder = update_typeorder(data)
-        serialize = OrderTypeSerializer(typeorder)
+        techn = update_technician(data)
+        serialize = OrderTypeSerializer(techn)
         return JsonResponse(serialize.data,safe=False)
 
 class SchedulerOrderView(APIView):
