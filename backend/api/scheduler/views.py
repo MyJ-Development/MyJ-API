@@ -147,11 +147,17 @@ class SchedulerTechnicianView(APIView):
             Parametros
             
                 {
-                    Sin parametros
+                    "active":"1"  // (opcional)
                 }  
         """
         #technician = get_technician_by_rut(request.GET.get('rut'))
-        technician = get_technicians()
+        active = ''
+        try:
+            #active = request.data['active']
+            active = request.GET.get('active')
+        except:
+            active = ''
+        technician = get_technicians(active)
         serialize = TechnicianSerializer(technician,many=True)
         return JsonResponse(serialize.data,safe=False)
     
@@ -172,6 +178,25 @@ class SchedulerTechnicianView(APIView):
         data = common_methods.get_request_data(request)
         technician=create_technician(data)
         return JsonResponse(_serialize_technician(technician))
+
+    @staticmethod
+    def put(request):
+        """ Actualizar tecnico
+            // Se deben enviar todos los campos, aunque no se quieran modificar
+
+                {
+                    "id" : "1",
+                    "comuna" : "comuna",
+                    "nombre" : "nombre",
+                    "capacidad" : "10",
+                    "estado" : "Vacaciones",
+                    "active" : "0",
+                }
+        """
+        data = common_methods.get_request_data(request)
+        typeorder = update_typeorder(data)
+        serialize = OrderTypeSerializer(typeorder)
+        return JsonResponse(serialize.data,safe=False)
 
 class SchedulerOrderView(APIView):
 

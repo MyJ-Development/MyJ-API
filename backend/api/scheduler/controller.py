@@ -135,11 +135,19 @@ def get_technician_by_rut(rut):
     except Exception:
         return None
 
-def get_technicians():
-    try:
-        return Technician.objects.all()
-    except Exception:
-        return None
+def get_technicians(active):
+    if(active):
+        try:
+            technicians = Technician.objects.filter(active=active)
+        except Exception:
+            raise Exception("Not found")
+    else:
+        try:
+            technicians = Technician.objects.filter()
+        except Exception:
+            raise Exception("Not found")
+
+    return technicians
 
 def create_technician(technician):
     technician = Technician(
@@ -151,6 +159,15 @@ def create_technician(technician):
     technician.save()
     return technician
 
+def update_technician(tech):
+    technician_updated = Technician.objects.get(id=tech['id'])
+    technician_updated.comuna=tech['comuna']
+    technician_updated.nombre=tech['nombre']
+    technician_updated.estado=tech['estado']
+    technician_updated.capacidad=tech['capacidad']
+    technician_updated.active=tech['active']
+    technician_updated.save()
+    return technician_updated
 
 #Order
 def get_order_by_id(id):
