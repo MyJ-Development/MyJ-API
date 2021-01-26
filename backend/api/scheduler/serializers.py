@@ -9,7 +9,17 @@ class UserSerializer(serializers.ModelSerializer):
 class OrderTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderType
-        fields = ['id','descripcion']
+        fields = '__all__'
+
+class ClientStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ClientStatus
+        fields = '__all__'
+
+class TicketStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TicketStatus
+        fields = '__all__'
 
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,8 +36,7 @@ class ResidenceSerializer(serializers.ModelSerializer):
 class TechnicianSerializer(serializers.ModelSerializer):
     class Meta:
         model = Technician
-        fields = ['id', 'rut', 'comuna', 'nombre', 'estado', 'capacidad']
-
+        fields = '__all__'
 
 class OrderSerializer(serializers.ModelSerializer):
     encargado = TechnicianSerializer(read_only=True)
@@ -35,7 +44,9 @@ class OrderSerializer(serializers.ModelSerializer):
     created_by = UserSerializer(read_only=True)
     client_residence = ResidenceSerializer(read_only=True)
     tipo = OrderTypeSerializer(read_only=True)
-    #tracking = TrackingSerializer(read_only=True)
+    estadocliente = ClientStatusSerializer(read_only=True)
+    estadoticket = TicketStatusSerializer(read_only=True)
+    #tracking = TrackingSerializer(read_only=True,many=True)
 
     class Meta:
         model = Order

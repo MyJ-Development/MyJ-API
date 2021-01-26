@@ -310,11 +310,17 @@ def get_ordertype_by_id(id):
         raise Exception("Not found")
     return ordertype
 
-def get_ordertypes():
-    try:
-        ordertype = OrderType.objects.filter()
-    except Exception:
-        raise Exception("Not found")
+def get_ordertypes(active):
+    if(active):
+        try:
+            ordertype = OrderType.objects.filter(active=active)
+        except Exception:
+            raise Exception("Not found")
+    else:
+        try:
+            ordertype = OrderType.objects.filter()
+        except Exception:
+            raise Exception("Not found")
 
     return ordertype
 
@@ -324,4 +330,63 @@ def create_ordertype(ordertype):
     ordertype.save()
     return ordertype
 
+def update_typeorder(typeorder):
+    typeorder_updated = OrderType.objects.get(id=typeorder['id'])
+    typeorder_updated.descripcion=typeorder['descripcion']
+    typeorder_updated.active=typeorder['active']
+    typeorder_updated.save()
+    return typeorder_updated
 
+#ClientStatus
+def get_clientstatus(active):
+    if(active):
+        try:
+            clientstat = ClientStatus.objects.filter(active=active)
+        except Exception:
+            raise Exception("Not found")
+    else:
+        try:
+            clientstat = ClientStatus.objects.filter()
+        except Exception:
+            raise Exception("Not found")
+
+    return clientstat
+
+def create_clientstatus(data):
+    new_clientstatus = ClientStatus(descripcion=data['descripcion'])
+    new_clientstatus.save()
+    return new_clientstatus
+
+def update_clientstatus(clientstat):
+    client_updated = ClientStatus.objects.get(id=clientstat['id'])
+    client_updated.descripcion=clientstat['descripcion']
+    client_updated.active=clientstat['active']
+    client_updated.save()
+    return client_updated
+
+#TicketStatus
+def get_ticketstatus(active):
+    if(active):
+        try:
+            ticketstat = TicketStatus.objects.filter(active=active)
+        except Exception:
+            raise Exception("Not found")
+    else:
+        try:
+            ticketstat = TicketStatus.objects.filter()
+        except Exception:
+            raise Exception("Not found")
+
+    return ticketstat
+
+def create_ticketstatus(data):
+    new_ticketstatus = TicketStatus(descripcion=data['descripcion'])
+    new_ticketstatus.save()
+    return new_ticketstatus
+
+def update_ticketstatus(ticket):
+    ticket_updated = TicketStatus.objects.get(id=ticket['id'])
+    ticket_updated.descripcion=ticket['descripcion']
+    ticket_updated.active=ticket['active']
+    ticket_updated.save()
+    return ticket_updated

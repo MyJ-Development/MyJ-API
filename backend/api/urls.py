@@ -16,12 +16,15 @@ Including another URLconf
 from django.conf.urls import url
 from .auth.views import AuthView
 from .user.views import UserView, UserSettings
-from .scheduler.views import SchedulerClientView,SchedulerResidenceView,SchedulerTechnicianView,SchedulerOrderView,SchedulerOrderTypeView,OrderByClientView
+
+from .scheduler.views import SchedulerTicketStatusView ,SchedulerClientStatusView ,SchedulerClientView,SchedulerResidenceView,SchedulerTechnicianView,SchedulerOrderView,SchedulerOrderTypeView,OrderByClientView
 from rest_framework_swagger.views import get_swagger_view
 schema_view = get_swagger_view(title='API MyJ')
 
 urlpatterns = [
     url('docs', schema_view),
+    url('scheduler/clientstatus', SchedulerClientStatusView.as_view(), name='ClientStatus'),
+    url('scheduler/ticketstatus', SchedulerTicketStatusView.as_view(), name='TicketStatus'),
     url('scheduler/client', SchedulerClientView.as_view(), name='Clients'),
     url('scheduler/residence', SchedulerResidenceView.as_view(), name='Residences'),
     url('scheduler/technician', SchedulerTechnicianView.as_view(), name='Technicians'),

@@ -211,8 +211,8 @@ class SchedulerOrderView(APIView):
                     "disponibilidad" : "despues 10 am",
                     "comentario" : "comentarioo",
                     "fechaejecucion" : "2020-05-3",
-                    "estadocliente" :  "No aplicable",
-                    "estadoticket" :  "No aplicable",
+                    "estadocliente" :  "1",
+                    "estadoticket" :  "1",
                     "mediodepago" :  "Imported",
                     "monto" :  "0",
                     "created_by" : "test@test.test", 
@@ -221,6 +221,7 @@ class SchedulerOrderView(APIView):
                     "domicilio" :  "1"
                 }
         """
+
         data = common_methods.get_request_data(request)
         order=create_order(data)
         serialize = OrderSerializer(order)
@@ -239,8 +240,8 @@ class SchedulerOrderView(APIView):
                     "disponibilidad" : "despues 10 am",
                     "comentario" : "comentarioo",
                     "fechaejecucion" : "2020-05-3",
-                    "estadocliente" :  "No aplicable",
-                    "estadoticket" :  "No aplicable",
+                    "estadocliente" :  "1",
+                    "estadoticket" :  "1",
                     "mediodepago" :  "Imported",
                     "monto" :  "0",
                     "created_by" : "test@test.test", 
@@ -262,10 +263,16 @@ class SchedulerOrderTypeView(APIView):
             Parametros
             
                 {
-                    Sin parametros
+                    "active":"1"  // (opcional)
                 }  
         """
-        ordertype=get_ordertypes()
+        active = ''
+        try:
+            #active = request.data['active']
+            active = request.GET.get('active')
+        except:
+            active = ''
+        ordertype=get_ordertypes(active)
         serialize = OrderTypeSerializer(ordertype,many=True)
         return JsonResponse(serialize.data,safe=False)
     
@@ -284,11 +291,129 @@ class SchedulerOrderTypeView(APIView):
         return JsonResponse(serialize.data,safe=False)
 
     @staticmethod
+    def put(request):
+        """ Actualizar tipo de orden
+            // Se deben enviar todos los campos, aunque no se quiera modificar
+
+                {
+                    "id" : "1",
+                    "descripcion" : "descripcion",
+                    "active" : "0",
+                }
+        """
+        data = common_methods.get_request_data(request)
+        typeorder = update_typeorder(data)
+        serialize = OrderTypeSerializer(typeorder)
+        return JsonResponse(serialize.data,safe=False)
+
+
+    @staticmethod
     def index(request):        
         ordertype = get_ordertype_by_id(request.data['idtipo'])
         serialize = OrderTypeSerializer(ordertype)
         return JsonResponse(serialize.data,safe=False)
 
+class SchedulerClientStatusView(APIView):
+
+    @staticmethod
+    def get(request):
+        """ Obtener Estados de cliente
+            Parametros
+            
+                {
+                    "active":"1"  // (opcional)
+                }  
+        """
+        active = ''
+        try:
+            #active = request.data['active']
+            active = request.GET.get('active')
+        except:
+            active = ''
+        ClientStatus=get_clientstatus(active)
+        serialize = ClientStatusSerializer(ClientStatus,many=True)
+        return JsonResponse(serialize.data,safe=False)
+    
+    @staticmethod
+    def post(request):
+        """ Agregar Estado de cliente
+            Parametros
+            
+                {
+                    "descripcion" : "Nuevo tipo de orden"
+                }  
+        """
+        data = common_methods.get_request_data(request)
+        ClientStatus=create_clientstatus(data)
+        serialize = ClientStatusSerializer(ClientStatus)
+        return JsonResponse(serialize.data,safe=False)
+
+    @staticmethod
+    def put(request):
+        """ Actualizar estado cliente
+            // Se deben enviar todos los campos, aunque no se quiera modificar
+
+                {
+                    "id" : "1",
+                    "descripcion" : "descripcion",
+                    "active" : "1",
+                }
+        """
+        data = common_methods.get_request_data(request)
+        client = update_clientstatus(data)
+        serialize = ClientStatusSerializer(client)
+        return JsonResponse(serialize.data,safe=False)
+
+class SchedulerTicketStatusView(APIView):
+
+    @staticmethod
+    def get(request):
+        """ Obtener Estados de ticket
+            Parametros
+            
+                {
+                    "active":"1"  // (opcional)
+                }  
+        """
+        active = ''
+        try:
+            #active = request.data['active']
+            active = request.GET.get('active')
+        except:
+            active = ''
+        TicketStatus=get_ticketstatus(active)
+        serialize = TicketStatusSerializer(TicketStatus,many=True)
+        return JsonResponse(serialize.data,safe=False)
+    
+    @staticmethod
+    def post(request):
+        """ Agregar Estado de ticket
+            Parametros
+            
+                {
+                    "descripcion" : "Nuevo tipo de ticket"
+                }  
+        """
+        data = common_methods.get_request_data(request)
+        TicketStatus=create_ticketstatus(data)
+        serialize = TicketStatusSerializer(TicketStatus)
+        return JsonResponse(serialize.data,safe=False)
+
+    @staticmethod
+    def put(request):
+        """ Actualizar estado ticket
+            // Se deben enviar todos los campos, aunque no se quiera modificar
+
+                {
+                    "id" : "1",
+                    "descripcion" : "descripcion",
+                    "active" : "1",
+                }
+        """
+        data = common_methods.get_request_data(request)
+        ticket = update_ticketstatus(data)
+        serialize = TicketStatusSerializer(ticket)
+        return JsonResponse(serialize.data,safe=False)
 
 class OrderByClientView(APIView):
     @staticmethod
@@ -297,7 +422,7 @@ class OrderByClientView(APIView):
             Parametros
             
                 {
-                    
+
                     "rut_cliente":"18839285-7", #id_orden #nombre_encargado #domicilio
                     "date_init":"2018-01-01",
                     "date_end":"2021-01-01"

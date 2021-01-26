@@ -14,7 +14,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     city = models.CharField(blank=True, max_length=255)
     zip = models.CharField(blank=True, max_length=10)
     role = models.CharField(default='', max_length=10)
-
+    active = models.BooleanField(default=True)
     USERNAME_FIELD = 'id'
 
 
@@ -47,6 +47,18 @@ class Residence(models.Model):
 class OrderType(models.Model):
     id = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=50)
+    active = models.BooleanField(default=True)
+
+class ClientStatus(models.Model):
+    id = models.AutoField(primary_key=True)
+    descripcion = models.CharField(max_length=50)
+    active = models.BooleanField(default=True)
+
+class TicketStatus(models.Model):
+    id = models.AutoField(primary_key=True)
+    descripcion = models.CharField(max_length=50)
+    active = models.BooleanField(default=True)
+
 
 class Technician(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -55,9 +67,7 @@ class Technician(models.Model):
     nombre = models.CharField(max_length=50)
     estado = models.CharField(blank=True,max_length=50)
     capacidad = models.IntegerField(blank=True)
-    
-
-
+    active = models.BooleanField(default=True)
 
 cliente_estados = (
     ("No aplicable","no aplicable"),
@@ -83,7 +93,7 @@ class Tracking(models.Model):
     comentario = models.CharField(max_length=300)
     created_by = models.ForeignKey(User,on_delete=models.CASCADE,related_name='tracking2created')
     created_at = models.DateTimeField(auto_now_add=True)
-    #order = models.models.ForeignKey(Order, blank=True, on_delete=models.DO_NOTHING)
+    #order = models.ForeignKey(Order, blank=True, on_delete=models.DO_NOTHING)
 
 class Order(models.Model):
     id = models.AutoField(primary_key=True)
@@ -92,8 +102,8 @@ class Order(models.Model):
     disponibilidad = models.CharField(blank=True,max_length=50)
     comentario = models.CharField(max_length=300,blank=True)
     fechaejecucion = models.DateField(blank=False)
-    estadocliente = models.CharField(max_length=30,choices=cliente_estados,default="No aplicable")
-    estadoticket =  models.CharField(max_length=30,choices=ticket_estados,default="No aplicable")
+    estadocliente = models.ForeignKey(ClientStatus,blank=True,on_delete=models.DO_NOTHING)
+    estadoticket =  models.ForeignKey(TicketStatus,blank=True,on_delete=models.DO_NOTHING)
     mediodepago = models.CharField(max_length=30,blank=True)
     monto = models.IntegerField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
