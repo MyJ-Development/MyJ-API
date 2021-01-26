@@ -17,7 +17,11 @@ from django.conf.urls import url
 from .auth.views import AuthView
 from .user.views import UserView, UserSettings
 from .scheduler.views import SchedulerClientView,SchedulerResidenceView,SchedulerTechnicianView,SchedulerOrderView,SchedulerOrderTypeView,OrderByClientView
+from rest_framework_swagger.views import get_swagger_view
+schema_view = get_swagger_view(title='API MyJ')
+
 urlpatterns = [
+    url('docs', schema_view),
     url('scheduler/client', SchedulerClientView.as_view(), name='Clients'),
     url('scheduler/residence', SchedulerResidenceView.as_view(), name='Residences'),
     url('scheduler/technician', SchedulerTechnicianView.as_view(), name='Technicians'),

@@ -36,6 +36,14 @@ class AuthView(APIView):
     @staticmethod
     @api_view(['POST'])
     def login(request):
+        """ Iniciar Sesion
+            Parametros
+            
+                {
+                    "email" : "test@test.test",
+                    "password" : "test"
+                }  
+        """
         logging.debug("Trying to login")
         data = common_methods.get_request_data(request)
 
@@ -59,6 +67,16 @@ class AuthView(APIView):
     @staticmethod
     @api_view(['POST'])
     def sign_up(request):
+        """ Registrar usuario
+            Parametros
+            
+                {
+                    "email" : "gabriel@myjchile.cl",
+                    "password" : "123456",
+                    "name" : "Gabriel Angael Ortega Jofre-(MAIPU)",
+                    "rut" : "9744263345"
+                }  
+        """
         logging.debug("Trying to register a new user")
         data = common_methods.get_request_data(request)
 

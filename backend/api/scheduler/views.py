@@ -18,16 +18,37 @@ logger = logging.getLogger(__name__)
 common_methods = Common()
 
 class SchedulerClientView(APIView):
-    permission_classes = (IsAuthenticated,)
 
     @staticmethod
     def get(request):
+        """ Obtener Clientes Por Rut
+            Parametros
+            
+                {
+                    "client_rut" : "RUTCLIENTE"
+                }  
+        """
         client = get_client_by_rut(request.GET.get('rut'))
         serialize = ClientSerializer(client)
         return JsonResponse(serialize.data,safe=False)
 
     @staticmethod
     def put(request):
+        """ Actualizar cliente
+            Parametros
+            // Se deben enviar todos los campos, aunque no se quiera modificar
+
+                {
+
+                    "rut":"9876543211",
+                    "email":"asdas@asda.com",
+                    "nombre":"testing",
+                    "contacto1":"1231233",
+                    "contacto2":"1231232",
+                    "created_by": "test@test.test",
+                    "updated_by": "test@test.test"
+                }
+        """
         data = common_methods.get_request_data(request)
         client = update_client(data)
         serialize = ClientSerializer(client)
@@ -35,6 +56,19 @@ class SchedulerClientView(APIView):
     
     @staticmethod
     def post(request):
+        """ Agregar cliente
+            //
+                {
+
+                    "rut":"987654321",
+                    "email":"asdas@asda.com",
+                    "nombre":"testing",
+                    "contacto1":"1231233",
+                    "contacto2":"1231232",
+                    "created_by": "test@test.test",
+                    "updated_by": "test@test.test"
+                }
+        """
         data = common_methods.get_request_data(request)
         client = get_client_by_rut(data['rut'])
         if(client):
@@ -45,10 +79,16 @@ class SchedulerClientView(APIView):
             return JsonResponse(serialize.data,safe=False)
 
 class SchedulerResidenceView(APIView):
-    permission_classes = (IsAuthenticated,)
 
     @staticmethod
     def get(request):
+        """ Obtener Residencias por rut de usuario
+            Parametros
+            
+                {
+                    "rut" : "RUTCLIENTE"
+                }  
+        """
         residence = ""
         try: 
             residence = get_residence_by_rut(request.data['rut'])
@@ -64,22 +104,52 @@ class SchedulerResidenceView(APIView):
 
     @staticmethod
     def post(request):
+        """ Agregar residencia
+            //
+
+                {
+
+                    "comuna":"Comuna",
+                    "direccion":"direccion",
+                    "mac":"mac",
+                    "pppoe":"pppoe",
+                    "client_rut": "123456789"
+                }
+        """
         data = common_methods.get_request_data(request)
         residence=create_residence(data)
         return JsonResponse(_serialize_residence(residence))
 
     @staticmethod
     def put(request):
+        """ Actualizar residencia
+            // Se deben enviar todos los campos, aunque no se quiera modificar
+
+                {
+                    
+                    "comuna":"Comuna",
+                    "direccion":"direccion",
+                    "mac":"mac",
+                    "pppoe":"pppoe",
+                    "client_rut": "123456789"
+                }
+        """
         data = common_methods.get_request_data(request)
         residence = update_residence(data)
         serialize = ResidenceSerializer(residence)
         return JsonResponse(serialize.data,safe=False)
 
 class SchedulerTechnicianView(APIView):
-    permission_classes = (IsAuthenticated,)
 
     @staticmethod
     def get(request):
+        """ Obtener todos los tecnicos
+            Parametros
+            
+                {
+                    Sin parametros
+                }  
+        """
         #technician = get_technician_by_rut(request.GET.get('rut'))
         technician = get_technicians()
         serialize = TechnicianSerializer(technician,many=True)
@@ -87,15 +157,34 @@ class SchedulerTechnicianView(APIView):
     
     @staticmethod
     def post(request):
+        """ Agregar tecnico
+            //
+
+                {
+
+                    "comuna":"Comuna",
+                    "rut":"123456789",
+                    "nombre":"nombre",
+                    "capacidad":"7",
+                    "estado":"No disponible"
+                }
+        """
         data = common_methods.get_request_data(request)
         technician=create_technician(data)
         return JsonResponse(_serialize_technician(technician))
 
 class SchedulerOrderView(APIView):
-    permission_classes = (IsAuthenticated,)
 
     @staticmethod
     def get(request):
+        """ Obtener order por rangos de fecha. formato YYYY-MM-DD
+            Parametros
+            
+                {
+                    "date_init" : "2018-01-01",
+                    "date_end" : "2021-01-01"
+                }  
+        """
         valid = 0
         try: 
             valid = request.GET.get('date_init')
@@ -105,21 +194,33 @@ class SchedulerOrderView(APIView):
             valid = 0
         if(valid):
             order = get_order_by_date(request.GET.get('date_init'),request.GET.get('date_end'))
-        
-        try:
-            valid = request.GET.get('email')
-            valid = 1
-        except:
-            valid =  0
-
-        if(valid):
-            order = get_order_by_email(request.GET.get('email'))
 
         serialize = OrderSerializer(order,many=True)
         return JsonResponse(serialize.data,safe=False)
     
     @staticmethod
     def post(request):
+        """ Agregar orden
+            //
+
+                {
+
+                    "id" : "40",
+                    "idtipo" : "1",            
+                    "prioridad" : "Primera del dia",
+                    "disponibilidad" : "despues 10 am",
+                    "comentario" : "comentarioo",
+                    "fechaejecucion" : "2020-05-3",
+                    "estadocliente" :  "No aplicable",
+                    "estadoticket" :  "No aplicable",
+                    "mediodepago" :  "Imported",
+                    "monto" :  "0",
+                    "created_by" : "test@test.test", 
+                    "encargado" : "SINRUT2",  
+                    "client_order" :  "7990228-4",
+                    "domicilio" :  "1"
+                }
+        """
         data = common_methods.get_request_data(request)
         order=create_order(data)
         serialize = OrderSerializer(order)
@@ -127,22 +228,56 @@ class SchedulerOrderView(APIView):
 
     @staticmethod
     def put(request):
+        """ Actualizar orden
+            // Se deben enviar todos los campos, aunque no se quiera modificar
+
+                {
+
+                    "id" : "40",
+                    "idtipo" : "1",            
+                    "prioridad" : "Primera del dia",
+                    "disponibilidad" : "despues 10 am",
+                    "comentario" : "comentarioo",
+                    "fechaejecucion" : "2020-05-3",
+                    "estadocliente" :  "No aplicable",
+                    "estadoticket" :  "No aplicable",
+                    "mediodepago" :  "Imported",
+                    "monto" :  "0",
+                    "created_by" : "test@test.test", 
+                    "encargado" : "SINRUT2",  
+                    "client_order" :  "7990228-4",
+                    "domicilio" :  "1"
+                }
+        """
         data = common_methods.get_request_data(request)
         order = update_order(data)
         serialize = OrderSerializer(order)
         return JsonResponse(serialize.data,safe=False)
 
 class SchedulerOrderTypeView(APIView):
-    permission_classes = (IsAuthenticated,)
 
     @staticmethod
     def get(request):
+        """ Obtener Tipos de ordenes
+            Parametros
+            
+                {
+                    Sin parametros
+                }  
+        """
         ordertype=get_ordertypes()
         serialize = OrderTypeSerializer(ordertype,many=True)
         return JsonResponse(serialize.data,safe=False)
     
     @staticmethod
     def post(request):
+        """ Agregar tipo de orden
+            Parametros
+            
+                {
+                    "descripcion" : "Nuevo tipo de orden"
+                }  
+        """
         data = common_methods.get_request_data(request)
         ordertype=create_ordertype(data)
         serialize = OrderTypeSerializer(ordertype)
@@ -156,9 +291,18 @@ class SchedulerOrderTypeView(APIView):
 
 
 class OrderByClientView(APIView):
-    
     @staticmethod
     def get(request):
+        """ Obtener ordenes por [rut,id orden, nombre encargado, domicilio]
+            Parametros
+            
+                {
+                    
+                    "rut_cliente":"18839285-7", #id_orden #nombre_encargado #domicilio
+                    "date_init":"2018-01-01",
+                    "date_end":"2021-01-01"
+                }  
+        """
         order = ""
         filter_rut_cliente = ""
         filter_id_orden = ""
@@ -201,61 +345,3 @@ class OrderByClientView(APIView):
 
         serialize = OrderSerializer(order,many=True)
         return JsonResponse(serialize.data,safe=False)
-
-
-
-def _serialize_client(client):
-    return {
-        "Code":"200",
-        "Response": {
-            'email': client.email,
-            'rut': client.rut,
-            'contacto1': client.contacto1,
-            'contacto2': client.contacto2,
-            'created_at' : client.created_at,
-            'updated_at' : client.updated_at
-        }
-    }
-
-def _serialize_residence(residence):
-    return {
-        "Code":"200",
-        "Response": {
-            'id': residence.id,
-            'comuna': residence.comuna,
-            'direccion': residence.direccion,
-            'mac': residence.mac,
-            'pppoe': residence.pppoe
-        }
-    }
-
-def _serialize_technician(technician):
-    return {
-        "Code":"200",
-        "Response": {
-            'rut': technician.rut,
-            'comuna': technician.comuna,
-            'nombre': technician.nombre,
-            'estado': technician.estado,
-            'capacidad': technician.capacidad
-        }
-    }
-
-def _serialize_order(order):
-    return {
-        "Code":"200",
-        "Response": {
-            'id': order.id,
-            'tipo': order.tipo,
-            'prioridad': order.prioridad,
-            'disponibilidad': order.disponibilidad,
-            'comentario': order.comentario,
-            'fechaejecucion': order.fechaejecucion,
-            'estadocliente': order.estadocliente,
-            'estadoticket': order.estadoticket,
-            'mediodepago': order.mediodepago,
-            'monto': order.monto,
-            'created_at': order.created_at
-        }
-    }
-
