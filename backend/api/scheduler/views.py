@@ -118,7 +118,8 @@ class SchedulerResidenceView(APIView):
         """
         data = common_methods.get_request_data(request)
         residence=create_residence(data)
-        return JsonResponse(_serialize_residence(residence))
+        serialize = ResidenceSerializer(residence)
+        return JsonResponse(serialize.data,safe=False)
 
     @staticmethod
     def put(request):
@@ -177,7 +178,8 @@ class SchedulerTechnicianView(APIView):
         """
         data = common_methods.get_request_data(request)
         technician=create_technician(data)
-        return JsonResponse(_serialize_technician(technician))
+        serialize = TechnicianSerializer(technician)
+        return JsonResponse(serialize.data,safe=False)
 
     @staticmethod
     def put(request):
@@ -194,8 +196,8 @@ class SchedulerTechnicianView(APIView):
                 }
         """
         data = common_methods.get_request_data(request)
-        techn = update_technician(data)
-        serialize = OrderTypeSerializer(techn)
+        technician = update_technician(data)
+        serialize = TechnicianSerializer(technician)
         return JsonResponse(serialize.data,safe=False)
 
 class SchedulerOrderView(APIView):
@@ -307,7 +309,8 @@ class SchedulerOrderTypeView(APIView):
             Parametros
             
                 {
-                    "descripcion" : "Nuevo tipo de orden"
+                    "descripcion" : "Nuevo tipo de orden",
+                    "peso" : "3"
                 }  
         """
         data = common_methods.get_request_data(request)
@@ -323,6 +326,7 @@ class SchedulerOrderTypeView(APIView):
                 {
                     "id" : "1",
                     "descripcion" : "descripcion",
+                    "peso" : "5",
                     "active" : "0",
                 }
         """

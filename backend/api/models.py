@@ -47,6 +47,7 @@ class Residence(models.Model):
 class OrderType(models.Model):
     id = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=50)
+    peso = models.IntegerField(default=1)
     active = models.BooleanField(default=True)
 
 class ClientStatus(models.Model):

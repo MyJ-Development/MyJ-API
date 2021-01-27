@@ -343,7 +343,9 @@ def get_ordertypes(active):
 
 def create_ordertype(ordertype):
     ordertype = OrderType(
-            descripcion=ordertype['descripcion'])
+            descripcion=ordertype['descripcion'],
+            peso=ordertype['peso']
+            )
     ordertype.save()
     return ordertype
 
@@ -351,6 +353,7 @@ def update_typeorder(typeorder):
     typeorder_updated = OrderType.objects.get(id=typeorder['id'])
     typeorder_updated.descripcion=typeorder['descripcion']
     typeorder_updated.active=typeorder['active']
+    typeorder_updated.peso=typeorder['peso']
     typeorder_updated.save()
     return typeorder_updated
 
