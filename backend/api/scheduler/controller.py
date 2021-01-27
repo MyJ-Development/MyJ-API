@@ -251,15 +251,14 @@ def create_order(order):
     tecnico = get_technician_by_rut(order['encargado'])
     domicilio = get_residence_by_id(order['domicilio'])
     ordertype = get_ordertype_by_id(order['idtipo'])
-
+    estadocliente=get_clientstatus_by_id(order['estadocliente'])
+    estadoticket=get_ticketstatus_by_id(order['estadoticket'])
     order = Order(
             tipo=ordertype,
             prioridad=order['prioridad'],
             disponibilidad=order['disponibilidad'],
             comentario=order['comentario'],
             fechaejecucion=order['fechaejecucion'],
-            estadocliente=order['estadocliente'],
-            estadoticket=order['estadoticket'],
             mediodepago=order['mediodepago'],
             monto=order['monto'],
             created_by=user,
@@ -277,6 +276,7 @@ def update_order(order):
     tecnico = get_technician_by_rut(order['encargado'])
     domicilio = get_residence_by_id(order['domicilio'])
     ordertype = get_ordertype_by_id(order['idtipo'])
+
     order_updated.tipo=ordertype
     order_updated.prioridad=order['prioridad']
     order_updated.disponibilidad=order['disponibilidad']
@@ -358,6 +358,15 @@ def update_typeorder(typeorder):
     return typeorder_updated
 
 #ClientStatus
+def get_clientatus_by_id(id):
+    if not id:
+        raise Exception('id not provided.')
+    try:
+        clientstat = ClientStatus.objects.get(id=id)
+    except Exception:
+        raise Exception("Not found")
+    return clientstat
+
 def get_clientstatus(active):
     if(active):
         try:
@@ -385,6 +394,15 @@ def update_clientstatus(clientstat):
     return client_updated
 
 #TicketStatus
+def get_ticketstatus_by_id(id):
+    if not id:
+        raise Exception('id not provided.')
+    try:
+        ticketstat = TicketStatus.objects.get(id=id)
+    except Exception:
+        raise Exception("Not found")
+    return ticketstat
+
 def get_ticketstatus(active):
     if(active):
         try:
