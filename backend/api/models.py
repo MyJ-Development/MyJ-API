@@ -35,7 +35,6 @@ class Client(models.Model):
     created_by = models.ForeignKey(User,blank=True,on_delete=models.DO_NOTHING)
     updated_by = models.ForeignKey(User,on_delete=models.DO_NOTHING,related_name='client2updatedby')
 
-
 class Residence(models.Model):
     id = models.AutoField(primary_key=True)
     comuna = models.CharField(max_length=50)
@@ -60,6 +59,15 @@ class TicketStatus(models.Model):
     descripcion = models.CharField(max_length=50)
     active = models.BooleanField(default=True)
 
+class MedioDePago(models.Model):
+    id = models.AutoField(primary_key=True)
+    descripcion = models.CharField(max_length=50)
+    active = models.BooleanField(default=True)
+
+class Prioridad(models.Model):
+    id = models.AutoField(primary_key=True)
+    descripcion = models.CharField(max_length=50)
+    active = models.BooleanField(default=True)
 
 class Technician(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -69,25 +77,6 @@ class Technician(models.Model):
     estado = models.CharField(blank=True,max_length=50)
     capacidad = models.IntegerField(blank=True)
     active = models.BooleanField(default=True)
-
-cliente_estados = (
-    ("No aplicable","no aplicable"),
-    ("Confirmado","confirmado"),
-    ("Sin Factibilidad","sin factibilidad"),
-    ("Deuda cliente","deuda cliente"),
-    ("Deuda domicilio","deuda domicilio"),
-    ("Responsabilidad cliente","responsabilidad cliente"),
-    ("Sin contacto","sin contacto"),
-    ("Confirmado cuenta creada","confirmado cuenta creada")
-)
-
-ticket_estados = (
-    ("No aplicable","no aplicable"),
-    ("En proceso","en proceso"),
-    ("Tecnico no acude","tecnico no acude"),
-    ("Cerrado","cerrado"),
-    ("Cerrado no terminado","cerrado no terminado")
-)
 
 class Tracking(models.Model):
     id = models.AutoField(primary_key=True)
@@ -99,13 +88,13 @@ class Tracking(models.Model):
 class Order(models.Model):
     id = models.AutoField(primary_key=True)
     tipo = models.ForeignKey(OrderType,blank=True,on_delete=models.DO_NOTHING)
-    prioridad = models.CharField(max_length=50)
+    prioridad = models.ForeignKey(Prioridad,blank=True,on_delete=models.DO_NOTHING)
     disponibilidad = models.CharField(blank=True,max_length=50)
     comentario = models.CharField(max_length=300,blank=True)
     fechaejecucion = models.DateField(blank=False)
     estadocliente = models.ForeignKey(ClientStatus,blank=True,on_delete=models.DO_NOTHING)
     estadoticket =  models.ForeignKey(TicketStatus,blank=True,on_delete=models.DO_NOTHING)
-    mediodepago = models.CharField(max_length=30,blank=True)
+    mediodepago = models.ForeignKey(MedioDePago,blank=True,on_delete=models.DO_NOTHING)
     monto = models.IntegerField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(User,blank=True,on_delete=models.DO_NOTHING)

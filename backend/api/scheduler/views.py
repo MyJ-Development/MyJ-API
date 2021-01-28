@@ -499,3 +499,105 @@ class OrderByClientView(APIView):
 
         serialize = OrderSerializer(order,many=True)
         return JsonResponse(serialize.data,safe=False)
+
+class SchedulerPrioridadView(APIView):
+
+    @staticmethod
+    def get(request):
+        """ Obtener Prioridades
+            Parametros
+            
+                {
+                    "active":"1"  // (opcional)
+                }  
+        """
+        active = ''
+        try:
+            #active = request.data['active']
+            active = request.GET.get('active')
+        except:
+            active = ''
+        Prioridad=get_prioridades(active)
+        serialize = PrioridadSerializer(Prioridad,many=True)
+        return JsonResponse(serialize.data,safe=False)
+    
+    @staticmethod
+    def post(request):
+        """ Agregar Prioridad
+            Parametros
+            
+                {
+                    "descripcion" : "Nuevo tipo de prioridad"
+                }  
+        """
+        data = common_methods.get_request_data(request)
+        Prioridades=create_prioridad(data)
+        serialize = PrioridadSerializer(Prioridades)
+        return JsonResponse(serialize.data,safe=False)
+
+    @staticmethod
+    def put(request):
+        """ Actualizar prioridad
+            // Se deben enviar todos los campos, aunque no se quiera modificar
+
+                {
+                    "id" : "1",
+                    "descripcion" : "descripcion",
+                    "active" : "1",
+                }
+        """
+        data = common_methods.get_request_data(request)
+        prioridad = update_prioridad(data)
+        serialize = PrioridadSerializer(prioridad)
+        return JsonResponse(serialize.data,safe=False)
+
+class SchedulerMedioDePagoView(APIView):
+
+    @staticmethod
+    def get(request):
+        """ Obtener Medios de pago
+            Parametros
+            
+                {
+                    "active":"1"  // (opcional)
+                }  
+        """
+        active = ''
+        try:
+            #active = request.data['active']
+            active = request.GET.get('active')
+        except:
+            active = ''
+        mediodepago=get_mediosdepago(active)
+        serialize = MedioDePagoSerializer(mediodepago,many=True)
+        return JsonResponse(serialize.data,safe=False)
+    
+    @staticmethod
+    def post(request):
+        """ Agregar medio de pago
+            Parametros
+            
+                {
+                    "descripcion" : "Nuevo tipo de medio de pago"
+                }  
+        """
+        data = common_methods.get_request_data(request)
+        mediodepago=create_mediodepago(data)
+        serialize = MedioDePagoSerializer(mediodepago)
+        return JsonResponse(serialize.data,safe=False)
+
+    @staticmethod
+    def put(request):
+        """ Actualizar medio de pago
+            // Se deben enviar todos los campos, aunque no se quiera modificar
+
+                {
+                    "id" : "1",
+                    "descripcion" : "descripcion",
+                    "active" : "1",
+                }
+        """
+        data = common_methods.get_request_data(request)
+        mediodepago = update_mediodepago(data)
+        serialize = MedioDePagoSerializer(mediodepago)
+        return JsonResponse(serialize.data,safe=False)

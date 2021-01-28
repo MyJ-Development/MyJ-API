@@ -21,6 +21,16 @@ class TicketStatusSerializer(serializers.ModelSerializer):
         model = TicketStatus
         fields = '__all__'
 
+class PrioridadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Prioridad
+        fields = '__all__'
+
+class MedioDePagoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Prioridad
+        fields = '__all__'
+
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
@@ -46,6 +56,8 @@ class OrderSerializer(serializers.ModelSerializer):
     tipo = OrderTypeSerializer(read_only=True)
     estadocliente = ClientStatusSerializer(read_only=True)
     estadoticket = TicketStatusSerializer(read_only=True)
+    mediodepago = MedioDePagoSerializer(read_only=True)
+    prioridad = PrioridadSerializer(read_only=True)
     #tracking = TrackingSerializer(read_only=True,many=True)
 
     class Meta:

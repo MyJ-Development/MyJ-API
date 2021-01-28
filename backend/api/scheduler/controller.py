@@ -276,14 +276,13 @@ def update_order(order):
     tecnico = get_technician_by_rut(order['encargado'])
     domicilio = get_residence_by_id(order['domicilio'])
     ordertype = get_ordertype_by_id(order['idtipo'])
-
+    estadocliente=get_clientstatus_by_id(order['estadocliente'])
+    estadoticket=get_ticketstatus_by_id(order['estadoticket'])
     order_updated.tipo=ordertype
     order_updated.prioridad=order['prioridad']
     order_updated.disponibilidad=order['disponibilidad']
     order_updated.comentario=order['comentario']
     order_updated.fechaejecucion=order['fechaejecucion']
-    order_updated.estadocliente=order['estadocliente']
-    order_updated.estadoticket=order['estadoticket']
     order_updated.mediodepago=order['mediodepago']
     order_updated.monto=order['monto']
     order_updated.created_by=user
@@ -428,3 +427,111 @@ def update_ticketstatus(ticket):
     ticket_updated.active=ticket['active']
     ticket_updated.save()
     return ticket_updated
+
+#ClientStatus
+def get_clientatus_by_id(id):
+    if not id:
+        raise Exception('id not provided.')
+    try:
+        clientstat = ClientStatus.objects.get(id=id)
+    except Exception:
+        raise Exception("Not found")
+    return clientstat
+
+def get_clientstatus(active):
+    if(active):
+        try:
+            clientstat = ClientStatus.objects.filter(active=active)
+        except Exception:
+            raise Exception("Not found")
+    else:
+        try:
+            clientstat = ClientStatus.objects.filter()
+        except Exception:
+            raise Exception("Not found")
+
+    return clientstat
+
+def create_clientstatus(data):
+    new_clientstatus = ClientStatus(descripcion=data['descripcion'])
+    new_clientstatus.save()
+    return new_clientstatus
+
+def update_clientstatus(clientstat):
+    client_updated = ClientStatus.objects.get(id=clientstat['id'])
+    client_updated.descripcion=clientstat['descripcion']
+    client_updated.active=clientstat['active']
+    client_updated.save()
+    return client_updated
+
+#Prioridad
+def get_prioridad_by_id(id):
+    if not id:
+        raise Exception('id not provided.')
+    try:
+        prior = Prioridad.objects.get(id=id)
+    except Exception:
+        raise Exception("Not found")
+    return prior
+
+def get_prioridades(active):
+    if(active):
+        try:
+            prior = Prioridad.objects.filter(active=active)
+        except Exception:
+            raise Exception("Not found")
+    else:
+        try:
+            prior = Prioridad.objects.filter()
+        except Exception:
+            raise Exception("Not found")
+
+    return prior
+
+def create_prioridad(data):
+    new_prior = Prioridad(descripcion=data['descripcion'])
+    new_prior.save()
+    return new_prior
+
+def update_prioridad(prioridad):
+    prior = Prioridad.objects.get(id=prioridad['id'])
+    prior.descripcion=prioridad['descripcion']
+    prior.active=prioridad['active']
+    prior.save()
+    return prior
+
+#MediosDePago
+def get_mediodepago_by_id(id):
+    if not id:
+        raise Exception('id not provided.')
+    try:
+        mediodepago = MedioDePago.objects.get(id=id)
+    except Exception:
+        raise Exception("Not found")
+    return mediodepago
+
+def get_mediosdepago(active):
+    if(active):
+        try:
+            mediodepago = MedioDePago.objects.filter(active=active)
+        except Exception:
+            raise Exception("Not found")
+    else:
+        try:
+            mediodepago = MedioDePago.objects.filter()
+        except Exception:
+            raise Exception("Not found")
+
+    return mediodepago
+
+def create_mediodepago(data):
+    mediodepago = MedioDePago(descripcion=data['descripcion'])
+    mediodepago.save()
+    return mediodepago
+
+def update_mediodepago(mediodepago):
+    mdepago = MedioDePago.objects.get(id=mediodepago['id'])
+    mdepago.descripcion=mediodepago['descripcion']
+    mdepago.active=mediodepago['active']
+    mdepago.save()
+    return mdepago
