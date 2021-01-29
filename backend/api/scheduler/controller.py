@@ -552,13 +552,13 @@ def update_mediodepago(mediodepago):
 def create_user(data):
     new_usr = User(
         email=data['email'],
-        password=generate_password_hash(data['password']),
+        password=data['password'],
         name=data['name'],
         rut=data['rut'],
         role=data['role'],
         age=18)
 
-    user_settings = UserSettings(id=user.id,
+    user_settings = UserSettings(id=new_usr.id,
                                  theme='default')
     new_usr.save()
     user_settings.save()
@@ -593,7 +593,7 @@ def update_user(user):
     usr.rut=user['rut']
     usr.active=user['active']
     usr.role=user['role']
-    usr.password=generate_password_hash(user['password'])  
+    usr.password=user['password']
     usr.save()
     return usr 
 

@@ -51,7 +51,7 @@ def create_user(email, password, name, rut, login='', age=18, street='',
                 city='', zip='', role='user'):
 
     user = User(email=email,
-                password=generate_password_hash(password),
+                password=password,
                 name=name,
                 rut=rut,
                 login=login,
