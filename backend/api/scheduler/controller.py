@@ -164,6 +164,7 @@ def update_technician(tech):
     technician_updated.comuna=tech['comuna']
     technician_updated.nombre=tech['nombre']
     technician_updated.estado=tech['estado']
+    technician_updated.rut=tech['rut']
     technician_updated.capacidad=tech['capacidad']
     technician_updated.active=tech['active']
     technician_updated.save()
@@ -251,20 +252,25 @@ def create_order(order):
     tecnico = get_technician_by_rut(order['encargado'])
     domicilio = get_residence_by_id(order['domicilio'])
     ordertype = get_ordertype_by_id(order['idtipo'])
-    estadocliente=get_clientstatus_by_id(order['estadocliente'])
-    estadoticket=get_ticketstatus_by_id(order['estadoticket'])
+    n_estadocliente=get_clientstatus_by_id(order['estadocliente'])
+    n_estadoticket=get_ticketstatus_by_id(order['estadoticket'])
+    n_prioridad=get_prioridad_by_id(order['prioridad'])
+    n_mediodepago=get_mediodepago_by_id(order['mediodepago'])
+
     order = Order(
             tipo=ordertype,
-            prioridad=order['prioridad'],
             disponibilidad=order['disponibilidad'],
             comentario=order['comentario'],
             fechaejecucion=order['fechaejecucion'],
-            mediodepago=order['mediodepago'],
             monto=order['monto'],
             created_by=user,
             encargado=tecnico,
             client_order=cliente,
-            client_residence=domicilio)
+            client_residence=domicilio,
+            estadocliente=n_estadocliente,
+            estadoticket=n_estadoticket,
+            prioridad=n_prioridad,
+            mediodepago=n_mediodepago)
         
     order.save()
     return order
@@ -276,17 +282,22 @@ def update_order(order):
     tecnico = get_technician_by_rut(order['encargado'])
     domicilio = get_residence_by_id(order['domicilio'])
     ordertype = get_ordertype_by_id(order['idtipo'])
-    estadocliente=get_clientstatus_by_id(order['estadocliente'])
-    estadoticket=get_ticketstatus_by_id(order['estadoticket'])
+    n_estadocliente=get_clientstatus_by_id(order['estadocliente'])
+    n_estadoticket=get_ticketstatus_by_id(order['estadoticket'])
+    n_prioridad=get_prioridad_by_id(order['prioridad'])
+    n_mediodepago=get_mediodepago_by_id(order['mediodepago'])
+
     order_updated.tipo=ordertype
-    order_updated.prioridad=order['prioridad']
     order_updated.disponibilidad=order['disponibilidad']
     order_updated.comentario=order['comentario']
     order_updated.fechaejecucion=order['fechaejecucion']
-    order_updated.mediodepago=order['mediodepago']
     order_updated.monto=order['monto']
     order_updated.created_by=user
     order_updated.encargado=tecnico
+    order_updated.estadocliente=n_estadocliente
+    order_updated.estadoticket=n_estadoticket
+    order_updated.prioridad=n_prioridad
+    order_updated.mediodepago=n_mediodepago
     order_updated.client_order=cliente
     order_updated.client_residence=domicilio
     order_updated.save()
@@ -357,7 +368,7 @@ def update_typeorder(typeorder):
     return typeorder_updated
 
 #ClientStatus
-def get_clientatus_by_id(id):
+def get_clientstatus_by_id(id):
     if not id:
         raise Exception('id not provided.')
     try:

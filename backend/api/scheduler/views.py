@@ -192,7 +192,8 @@ class SchedulerTechnicianView(APIView):
                     "nombre" : "nombre",
                     "capacidad" : "10",
                     "estado" : "Vacaciones",
-                    "active" : "0",
+                    "rut" : "12345689-0",
+                    "active" : "0"
                 }
         """
         data = common_methods.get_request_data(request)
