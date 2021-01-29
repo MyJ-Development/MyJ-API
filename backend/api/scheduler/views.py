@@ -602,3 +602,64 @@ class SchedulerMedioDePagoView(APIView):
         mediodepago = update_mediodepago(data)
         serialize = MedioDePagoSerializer(mediodepago)
         return JsonResponse(serialize.data,safe=False)
+
+
+class SchedulerUserView(APIView):
+
+    @staticmethod
+    def get(request):
+        """ Obtener Usuarios
+            Parametros
+            
+                {
+                    "active":"1"  // (opcional)
+                }  
+        """
+        active = ''
+        try:
+            active = request.data['active']
+            #active = request.GET.get('active')
+        except:
+            active = ''
+        users=get_users(active)
+        serialize = UserSerializer(users,many=True)
+        return JsonResponse(serialize.data,safe=False)
+    
+    @staticmethod
+    def post(request):
+        """ Agregar usuario
+            Parametros
+            
+                {
+                        
+                    "email" : "email@email.email",
+                    "password" : "password",
+                    "name" : "name",
+                    "rut" : "rut",
+                    "role" : "role"
+                }
+        """
+        data = common_methods.get_request_data(request)
+        usr=create_user(data)
+        serialize = UserSerializer(usr)
+        return JsonResponse(serialize.data,safe=False)
+
+    @staticmethod
+    def put(request):
+        """ Actualizar user
+            // Se deben enviar todos los campos, aunque no se quiera modificar
+
+                {
+                        
+                    "email" : "email@email.email",
+                    "password" : "password",
+                    "name" : "name",
+                    "rut" : "rut",
+                    "role" : "role",
+                    "active" : "0"
+                }
+        """
+        data = common_methods.get_request_data(request)
+        usr = update_user(data)
+        serialize = UserSerializer(usr)
+        return JsonResponse(serialize.data,safe=False)

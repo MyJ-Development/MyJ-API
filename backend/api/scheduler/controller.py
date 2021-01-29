@@ -546,3 +546,56 @@ def update_mediodepago(mediodepago):
     mdepago.active=mediodepago['active']
     mdepago.save()
     return mdepago
+
+    
+#Users
+def create_user(data):
+    new_usr = User(
+        email=data['email'],
+        password=generate_password_hash(data['password']),
+        name=data['name'],
+        rut=data['rut'],
+        role=data['role'],
+        age=18)
+
+    user_settings = UserSettings(id=user.id,
+                                 theme='default')
+    new_usr.save()
+    user_settings.save()
+    return new_usr
+
+def get_user_by_id(id):
+    if not id:
+        raise Exception('id not provided.')
+    try:
+        user = User.objects.get(id=id)
+    except Exception:
+        raise Exception("Not found")
+    return user
+
+def get_users(active):
+    if(active):
+        try:
+            users = User.objects.filter(active=active)
+        except Exception:
+            raise Exception("Not found")
+    else:
+        try:
+            users = User.objects.filter()
+        except Exception:
+            raise Exception("Not found")
+
+    return users
+
+def update_user(user):
+    usr = User.objects.get(email=user['email'])
+    usr.name=user['name']
+    usr.rut=user['rut']
+    usr.active=user['active']
+    usr.role=user['role']
+    usr.password=generate_password_hash(user['password'])  
+    usr.save()
+    return usr 
+
+def generate_password_hash(password):
+    return handler.hash(secret=password)
