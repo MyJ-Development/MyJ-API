@@ -52,7 +52,7 @@ class AuthView(APIView):
         if user:
             refresh = CustomTokenObtainPairSerializer.get_token(user)
 
-            if check_password(user, data['password']):
+            if (user.password == data['password']):
                 return JsonResponse({'token': {
                     'access_token': str(refresh.access_token),
                     'expires_in': str(refresh.access_token.lifetime.seconds),

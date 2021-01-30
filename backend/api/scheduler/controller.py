@@ -304,27 +304,25 @@ def update_order(order):
     return order_updated
 
 #Tracking
-def get_tracking_by_rut(rut):
-    if not rut:
-        raise Exception('residence rut not provided.')
+def get_tracking_by_order_id(id):
+    if not id:
+        raise Exception('order id not provided.')
     try:
-        tracking = Tracking.objects.all()
-
+        tracking = Tracking.objects.filter(order_id=id)
     except Exception:
         raise Exception("Not found")
-
     return tracking
 
-def create_tracking(residence):
-    client=get_client_by_rut(residence['client_rut'])
-    residence = Residence(
-            comuna=residence['comuna'],
-            direccion=residence['direccion'],
-            mac=residence['mac'],
-            pppoe=residence['pppoe'],
-            client=client)
-    residence.save()
-    return residence
+def create_tracking(tracking):
+    user=get_user_by_email(tracking['user_email'])
+    order=get_order_by_id(tracking['order_id'])
+    new_tracking = Tracking(
+            comentario=tracking['comentario'],
+            created_by=user,
+            order_id=order)
+    new_tracking.save()
+    return new_tracking
+
 
 
 #OrderType
@@ -354,7 +352,8 @@ def get_ordertypes(active):
 def create_ordertype(ordertype):
     ordertype = OrderType(
             descripcion=ordertype['descripcion'],
-            peso=ordertype['peso']
+            peso=ordertype['peso'],
+            valor=ordertype['valor']
             )
     ordertype.save()
     return ordertype
@@ -364,6 +363,7 @@ def update_typeorder(typeorder):
     typeorder_updated.descripcion=typeorder['descripcion']
     typeorder_updated.active=typeorder['active']
     typeorder_updated.peso=typeorder['peso']
+    typeorder_updated.valor=typeorder['valor']
     typeorder_updated.save()
     return typeorder_updated
 

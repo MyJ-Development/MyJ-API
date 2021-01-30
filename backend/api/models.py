@@ -47,6 +47,7 @@ class OrderType(models.Model):
     id = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=50)
     peso = models.IntegerField(default=1)
+    valor = models.IntegerField(default=1)
     active = models.BooleanField(default=True)
 
 class ClientStatus(models.Model):
@@ -78,13 +79,6 @@ class Technician(models.Model):
     capacidad = models.IntegerField(blank=True)
     active = models.BooleanField(default=True)
 
-class Tracking(models.Model):
-    id = models.AutoField(primary_key=True)
-    comentario = models.CharField(max_length=300)
-    created_by = models.ForeignKey(User,on_delete=models.CASCADE,related_name='tracking2created')
-    created_at = models.DateTimeField(auto_now_add=True)
-    #order = models.ForeignKey(Order, blank=True, on_delete=models.DO_NOTHING)
-
 class Order(models.Model):
     id = models.AutoField(primary_key=True)
     tipo = models.ForeignKey(OrderType,blank=True,on_delete=models.DO_NOTHING)
@@ -101,4 +95,12 @@ class Order(models.Model):
     encargado = models.ForeignKey(Technician,blank=True,on_delete=models.DO_NOTHING)
     client_order = models.ForeignKey(Client,blank=True,on_delete=models.DO_NOTHING)
     client_residence = models.ForeignKey(Residence,blank=True,on_delete=models.DO_NOTHING,default="0")
-    #tracking = models.ManyToManyField(Tracking,blank=True,related_name="orders")
+    #client = models.ForeignKey(Client,on_delete=models.DO_NOTHING)
+    #tracking = models.ForeignKey(Tracking,blank=True,related_name="tracking")
+
+class Tracking(models.Model):
+    id = models.AutoField(primary_key=True)
+    comentario = models.CharField(max_length=300)
+    created_by = models.ForeignKey(User, blank=True,on_delete=models.CASCADE,related_name='tracking2created')
+    created_at = models.DateTimeField(auto_now_add=True)
+    order_id = models.ForeignKey(Order, blank=True, on_delete=models.DO_NOTHING,default='')

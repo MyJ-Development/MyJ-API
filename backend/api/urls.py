@@ -17,7 +17,7 @@ from django.conf.urls import url
 from .auth.views import AuthView
 from .user.views import UserView, UserSettings
 
-from .scheduler.views import SchedulerUserView,SchedulerMedioDePagoView,SchedulerPrioridadView,SchedulerTicketStatusView ,SchedulerClientStatusView ,SchedulerClientView,SchedulerResidenceView,SchedulerTechnicianView,SchedulerOrderView,SchedulerOrderTypeView,OrderByClientView
+from .scheduler.views import  SchedulerTrackingView,SchedulerUserView,SchedulerMedioDePagoView,SchedulerPrioridadView,SchedulerTicketStatusView ,SchedulerClientStatusView ,SchedulerClientView,SchedulerResidenceView,SchedulerTechnicianView,SchedulerOrderView,SchedulerOrderTypeView,OrderByClientView
 from rest_framework_swagger.views import get_swagger_view
 schema_view = get_swagger_view(title='API MyJ')
 
@@ -27,6 +27,7 @@ urlpatterns = [
     url('scheduler/ticketstatus', SchedulerTicketStatusView.as_view(), name='TicketStatus'),
     url('scheduler/mediodepago', SchedulerMedioDePagoView.as_view(), name='mediodepago'),
     url('scheduler/users', SchedulerUserView.as_view(), name='Users'),
+    url('scheduler/seguimientos', SchedulerTrackingView.as_view(), name='Seguimientos'),
     url('scheduler/prioridad', SchedulerPrioridadView.as_view(), name='Prioridad'),
     url('scheduler/client', SchedulerClientView.as_view(), name='Clients'),
     url('scheduler/residence', SchedulerResidenceView.as_view(), name='Residences'),

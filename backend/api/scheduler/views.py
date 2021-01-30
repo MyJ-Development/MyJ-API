@@ -311,7 +311,8 @@ class SchedulerOrderTypeView(APIView):
             
                 {
                     "descripcion" : "Nuevo tipo de orden",
-                    "peso" : "3"
+                    "peso" : "3",
+                    "valor" : "1"
                 }  
         """
         data = common_methods.get_request_data(request)
@@ -328,7 +329,8 @@ class SchedulerOrderTypeView(APIView):
                     "id" : "1",
                     "descripcion" : "descripcion",
                     "peso" : "5",
-                    "active" : "0",
+                    "valor" : "1",
+                    "active" : "0"
                 }
         """
         data = common_methods.get_request_data(request)
@@ -617,8 +619,8 @@ class SchedulerUserView(APIView):
         """
         active = ''
         try:
-            active = request.data['active']
-            #active = request.GET.get('active')
+            #active = request.data['active']
+            active = request.GET.get('active')
         except:
             active = ''
         users=get_users(active)
@@ -662,4 +664,36 @@ class SchedulerUserView(APIView):
         data = common_methods.get_request_data(request)
         usr = update_user(data)
         serialize = UserSerializer(usr)
+        return JsonResponse(serialize.data,safe=False)
+
+class SchedulerTrackingView(APIView):
+
+    @staticmethod
+    def get(request):
+        """ Obtener Seguimientos por id de orden 
+            Parametros
+            
+                {
+                    "order_id":"1"
+                }  
+        """
+        tracks=get_tracking_by_order_id(request.GET.get('order_id'))
+        serialize = TrackingSerializer(tracks,many=True)
+        return JsonResponse(serialize.data,safe=False)
+    
+    @staticmethod
+    def post(request):
+        """ Agregar seguimiento a orden
+            Parametros
+            
+                {
+                        
+                    "comentario" : "Seguimiento 1",
+                    "user_email" : "test@test.test",
+                    "order_id" : "1"
+                }
+        """
+        data = common_methods.get_request_data(request)
+        track=create_tracking(data)
+        serialize = TrackingSerializer(track)
         return JsonResponse(serialize.data,safe=False)

@@ -12,6 +12,12 @@ class OrderTypeSerializer(serializers.ModelSerializer):
         model = OrderType
         fields = '__all__'
 
+class TrackingSerializer(serializers.ModelSerializer):
+    created_by = UserSerializer(read_only=True)
+    class Meta:
+        model = Tracking
+        fields = '__all__'
+
 class ClientStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClientStatus
@@ -59,7 +65,6 @@ class OrderSerializer(serializers.ModelSerializer):
     estadoticket = TicketStatusSerializer(read_only=True)
     mediodepago = MedioDePagoSerializer(read_only=True)
     prioridad = PrioridadSerializer(read_only=True)
-    #tracking = TrackingSerializer(read_only=True,many=True)
 
     class Meta:
         model = Order
