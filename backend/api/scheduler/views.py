@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated
 from ..auth.views import CustomTokenObtainPairSerializer
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.http import JsonResponse
 from ..common import Common
 from .controller import *
@@ -645,7 +646,14 @@ class SchedulerUserView(APIView):
         data = common_methods.get_request_data(request)
         usr=create_user(data)
         serialize = UserSerializer(usr)
-        return JsonResponse(serialize.data,safe=False)
+        refresh = CustomTokenObtainPairSerializer.get_token(
+            get_user_by_email(email=data['email']))
+        return JsonResponse({'token': {
+            'access_token': str(refresh.access_token),
+            'expires_in': str(refresh.access_token.lifetime.seconds),
+            'refresh_token': str(refresh)
+        }})
+        #return JsonResponse(serialize.data,safe=False)
 
     @staticmethod
     def put(request):
@@ -730,3 +738,29 @@ class SchedulerTechOrderView(APIView):
         techorder=create_techordertype(data)
         serialize = TechnicianSerializer(techorder)
         return JsonResponse(serialize.data,safe=False)
+
+    @staticmethod
+    def delete(request):
+        """ Eliminar tipo de orden a tecnico
+            Parametros
+            
+                {
+                        
+                    "ordertype_id" : "1",
+                    "tecnico_rut" : "12345678-9"
+                }
+        """
+        data = common_methods.get_request_data(request)
+        techorder=delete_techordertype(data)
+        serialize = TechnicianSerializer(techorder)
+        return JsonResponse(serialize.data,safe=False)
+    
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        token['role'] = user.role
+
+        return token

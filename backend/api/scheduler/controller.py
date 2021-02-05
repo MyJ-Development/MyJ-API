@@ -627,3 +627,21 @@ def create_techordertype(request):
 
     techorders.type_orders.add(order)
     return techorders
+
+def delete_techordertype(request):
+    if not request['tecnico_rut']:
+        raise Exception('tecnico_rut not provided')
+    try:
+        techorders = Technician.objects.get(rut=request['tecnico_rut'])
+    except Exception:
+        raise Exception("Not found")
+    
+    if not request['ordertype_id']:
+        raise Exception('ordertype_id not provided')
+    try:
+        order = OrderType.objects.get(id=request['ordertype_id'])
+    except Exception:
+        raise Exception("Not found")
+
+    techorders.type_orders.remove(order)
+    return techorders
