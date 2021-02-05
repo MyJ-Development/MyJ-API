@@ -286,7 +286,6 @@ def update_order(order):
     n_estadoticket=get_ticketstatus_by_id(order['estadoticket'])
     n_prioridad=get_prioridad_by_id(order['prioridad'])
     n_mediodepago=get_mediodepago_by_id(order['mediodepago'])
-
     order_updated.tipo=ordertype
     order_updated.disponibilidad=order['disponibilidad']
     order_updated.comentario=order['comentario']
@@ -599,3 +598,32 @@ def update_user(user):
 
 def generate_password_hash(password):
     return handler.hash(secret=password)
+
+
+#TechOrder
+def get_techorder_by_ordertype_id(id):
+    if not id:
+        raise Exception('id not provided.')
+    try:
+        techorders = Technician.objects.filter(type_orders__id=id)
+    except Exception:
+        techorders = ''
+    return techorders
+
+def create_techordertype(request):
+    if not request['tecnico_rut']:
+        raise Exception('tecnico_rut not provided')
+    try:
+        techorders = Technician.objects.get(rut=request['tecnico_rut'])
+    except Exception:
+        raise Exception("Not found")
+    
+    if not request['ordertype_id']:
+        raise Exception('ordertype_id not provided')
+    try:
+        order = OrderType.objects.get(id=request['ordertype_id'])
+    except Exception:
+        raise Exception("Not found")
+
+    techorders.type_orders.add(order)
+    return techorders

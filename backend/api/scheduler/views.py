@@ -176,10 +176,11 @@ class SchedulerTechnicianView(APIView):
                     "estado":"No disponible"
                 }
         """
+
         data = common_methods.get_request_data(request)
         technician=create_technician(data)
         serialize = TechnicianSerializer(technician)
-        return JsonResponse(serialize.data,safe=False)
+        return JsonResponse({"Code":"200"},safe=False)
 
     @staticmethod
     def put(request):
@@ -696,4 +697,36 @@ class SchedulerTrackingView(APIView):
         data = common_methods.get_request_data(request)
         track=create_tracking(data)
         serialize = TrackingSerializer(track)
+        return JsonResponse(serialize.data,safe=False)
+
+class SchedulerTechOrderView(APIView):
+
+    @staticmethod
+    def get(request):
+        """ Obtener tecnicos que realizan X tipo de orden
+            Parametros
+            
+                {
+                    "ordertype_id":"1"
+                }
+        """
+        #techs=get_techorder_by_ordertype_id(request.GET.get('ordertype_id'))
+        techs=get_techorder_by_ordertype_id(request.data['ordertype_id'])
+        serialize = TechnicianSerializer(techs,many=True)
+        return JsonResponse(serialize.data,safe=False)
+    
+    @staticmethod
+    def post(request):
+        """ Agregar tipo de orden a tecnico
+            Parametros
+            
+                {
+                        
+                    "ordertype_id" : "1",
+                    "tecnico_rut" : "12345678-9"
+                }
+        """
+        data = common_methods.get_request_data(request)
+        techorder=create_techordertype(data)
+        serialize = TechnicianSerializer(techorder)
         return JsonResponse(serialize.data,safe=False)

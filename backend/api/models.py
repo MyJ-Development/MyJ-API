@@ -78,6 +78,7 @@ class Technician(models.Model):
     estado = models.CharField(blank=True,max_length=50)
     capacidad = models.IntegerField(blank=True)
     active = models.BooleanField(default=True)
+    type_orders = models.ManyToManyField(OrderType)
 
 class Order(models.Model):
     id = models.AutoField(primary_key=True)
@@ -86,8 +87,8 @@ class Order(models.Model):
     disponibilidad = models.CharField(blank=True,max_length=50)
     comentario = models.CharField(max_length=300,blank=True)
     fechaejecucion = models.DateField(blank=False)
-    estadocliente = models.ForeignKey(ClientStatus,blank=True,on_delete=models.DO_NOTHING)
-    estadoticket =  models.ForeignKey(TicketStatus,blank=True,on_delete=models.DO_NOTHING)
+    estadocliente = models.ForeignKey(ClientStatus,blank=True,null=True,on_delete=models.DO_NOTHING)
+    estadoticket =  models.ForeignKey(TicketStatus,blank=True,null=True,on_delete=models.DO_NOTHING)
     mediodepago = models.ForeignKey(MedioDePago,blank=True,on_delete=models.DO_NOTHING)
     monto = models.IntegerField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

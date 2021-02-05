@@ -51,6 +51,7 @@ class ResidenceSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class TechnicianSerializer(serializers.ModelSerializer):
+    type_orders = OrderTypeSerializer(read_only=True,many=True)
     class Meta:
         model = Technician
         fields = '__all__'
