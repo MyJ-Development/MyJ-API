@@ -715,11 +715,20 @@ class SchedulerTechOrderView(APIView):
             Parametros
             
                 {
-                    "ordertype_id":"1"
+                    "ordertype_id":"1", (Opcional)
+                    "rut_tecnico":"12345678-9" (Opcional)
                 }
         """
-        #techs=get_techorder_by_ordertype_id(request.GET.get('ordertype_id'))
-        techs=get_techorder_by_ordertype_id(request.data['ordertype_id'])
+        try: 
+            techs=get_techorder_by_ordertype_id(request.GET.get('ordertype_id'))
+        except:
+            pass
+
+        try: 
+            techs=get_techorder_by_tech_rut(request.GET.get('rut_tecnico'))
+        except:
+            pass   
+        #techs=get_techorder_by_ordertype_id(request.data['ordertype_id'])
         serialize = TechnicianSerializer(techs,many=True)
         return JsonResponse(serialize.data,safe=False)
     

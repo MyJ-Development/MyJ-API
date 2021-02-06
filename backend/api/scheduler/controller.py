@@ -610,6 +610,15 @@ def get_techorder_by_ordertype_id(id):
         techorders = ''
     return techorders
 
+def get_techorder_by_tech_rut(rut):
+    if not rut:
+        raise Exception('rut not provided.')
+    try:
+        techorders = Technician.objects.filter(rut=rut)
+    except Exception:
+        techorders = ''
+    return techorders
+
 def create_techordertype(request):
     if not request['tecnico_rut']:
         raise Exception('tecnico_rut not provided')
