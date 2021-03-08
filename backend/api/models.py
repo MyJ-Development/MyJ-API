@@ -79,6 +79,7 @@ class Technician(models.Model):
     capacidad = models.IntegerField(blank=True)
     active = models.BooleanField(default=True)
     type_orders = models.ManyToManyField(OrderType)
+    assigned_user = models.ManyToManyField(User)
 
 class Order(models.Model):
     id = models.AutoField(primary_key=True)

@@ -28,7 +28,7 @@ if not SECRET_KEY:
     # SECURITY WARNING: keep the secret key used in production secret!
     SECRET_KEY = '&j8au*lf%i=d2niee^qlza!d3=$(5c2h^)jt(r(m!u%8+2@wlm'
     ALLOWED_HOSTS = ["*"]
-    LOG_LEVEL = 'DEBUG'
+    LOG_LEVEL = 'INFO'
 else:
     DEBUG = False
     ALLOWED_HOSTS = ["*"]

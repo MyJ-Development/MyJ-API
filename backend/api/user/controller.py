@@ -22,7 +22,12 @@ def get_user_by_email(email):
     if not email:
         raise Exception('No user email provided.')
     try:
-        user = User.objects.get(email=email)
+        user = User.objects.filter(email=email)
+        try:
+            user = user[0]
+        except:
+            pass
+
     except User.DoesNotExist:
         user = None
 

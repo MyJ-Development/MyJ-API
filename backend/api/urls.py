@@ -17,7 +17,7 @@ from django.conf.urls import url
 from .auth.views import AuthView
 from .user.views import UserView, UserSettings
 
-from .scheduler.views import  SchedulerTechOrderView,SchedulerTrackingView,SchedulerUserView,SchedulerMedioDePagoView,SchedulerPrioridadView,SchedulerTicketStatusView ,SchedulerClientStatusView ,SchedulerClientView,SchedulerResidenceView,SchedulerTechnicianView,SchedulerOrderView,SchedulerOrderTypeView,OrderByClientView
+from .scheduler.views import  SchedulerUserAssignedTechView,SchedulerTechOrderView,SchedulerTrackingView,SchedulerUserView,SchedulerMedioDePagoView,SchedulerPrioridadView,SchedulerTicketStatusView ,SchedulerClientStatusView ,SchedulerClientView,SchedulerResidenceView,SchedulerTechnicianView,SchedulerOrderView,SchedulerOrderTypeView,OrderByClientView
 from rest_framework_swagger.views import get_swagger_view
 schema_view = get_swagger_view(title='API MyJ')
 
@@ -25,6 +25,7 @@ urlpatterns = [
     url('docs', schema_view),
     url('scheduler/clientstatus', SchedulerClientStatusView.as_view(), name='ClientStatus'),
     url('scheduler/techtypeorder', SchedulerTechOrderView.as_view(), name='TechOrderType'),
+    url('scheduler/userassgignedtech', SchedulerUserAssignedTechView.as_view(), name='UserAssignedTech'),
     url('scheduler/ticketstatus', SchedulerTicketStatusView.as_view(), name='TicketStatus'),
     url('scheduler/mediodepago', SchedulerMedioDePagoView.as_view(), name='mediodepago'),
     url('scheduler/users', SchedulerUserView.as_view(), name='Users'),

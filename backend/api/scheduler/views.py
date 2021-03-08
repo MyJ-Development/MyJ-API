@@ -29,7 +29,16 @@ class SchedulerClientView(APIView):
                     "client_rut" : "RUTCLIENTE"
                 }  
         """
-        client = get_client_by_rut(request.GET.get('rut'))
+        try:
+            client = get_client_by_rut(request.GET.get('rut'))
+        except:
+            pass
+        try:
+            client = get_client_by_rut(request.data['rut'])
+        except:
+            pass
+
+
         serialize = ClientSerializer(client)
         return JsonResponse(serialize.data,safe=False)
 
@@ -452,20 +461,22 @@ class SchedulerTicketStatusView(APIView):
 class OrderByClientView(APIView):
     @staticmethod
     def get(request):
-        """ Obtener ordenes por [rut,id orden, nombre encargado, domicilio]
+        """ Obtener ordenes por [rut,id orden, nombre encargado, domicilio, created_by]
             Parametros
             
                 {
 
-                    "rut_cliente":"18839285-7", #id_orden #nombre_encargado #domicilio
+                    "rut_cliente":"18839285-7", #id_orden #nombre_encargado #domicilio #created_by
                     "date_init":"2018-01-01",
                     "date_end":"2021-01-01"
-                }  
+                }
         """
         order = ""
         filter_rut_cliente = ""
         filter_id_orden = ""
         filter_nombre_encargado = ""
+        filter_domicilio = ""
+        filter_created_by = ""
         date_init = ""
         date_end = ""
         try:
@@ -492,6 +503,10 @@ class OrderByClientView(APIView):
             filter_domicilio = request.GET.get('domicilio')
         except:
             pass
+        try:
+            filter_created_by = request.GET.get('created_by')
+        except:
+            pass
 
         if (filter_rut_cliente):
             order = get_order_by_rut_filter(filter_rut_cliente)
@@ -501,7 +516,8 @@ class OrderByClientView(APIView):
             order = get_order_by_nombre_encargado_filter(filter_nombre_encargado,date_init,date_end)
         if (filter_domicilio):
             order = get_order_by_domicilio_filter(filter_domicilio,date_init,date_end)
-
+        if (filter_created_by):
+            order = get_order_by_created_by_filter(filter_created_by,date_init,date_end)
         serialize = OrderSerializer(order,many=True)
         return JsonResponse(serialize.data,safe=False)
 
@@ -749,7 +765,7 @@ class SchedulerTechOrderView(APIView):
         return JsonResponse(serialize.data,safe=False)
 
     @staticmethod
-    def delete(request):
+    def put(request):
         """ Eliminar tipo de orden a tecnico
             Parametros
             
@@ -761,6 +777,63 @@ class SchedulerTechOrderView(APIView):
         """
         data = common_methods.get_request_data(request)
         techorder=delete_techordertype(data)
+        serialize = TechnicianSerializer(techorder)
+        return JsonResponse(serialize.data,safe=False)
+
+class SchedulerUserAssignedTechView(APIView):
+
+    @staticmethod
+    def get(request):
+        """ Obtener tecnicos que tiene asignado un vendedor
+            Parametros
+            
+                {
+                    "user_email":"test@test.test", (Opcional)
+                    "rut_tecnico":"12345678-9" (Opcional)
+                }
+        """
+        try: 
+            techs=get_user_assigned_tech_by_user_email(request.GET.get('user_email'))
+        except:
+            pass
+
+        try: 
+            techs=get_user_assigned_tech_by_tech_rut(request.GET.get('rut_tecnico'))
+        except:
+            pass   
+        #techs=get_techorder_by_ordertype_id(request.data['ordertype_id'])
+        serialize = TechnicianSerializer(techs,many=True)
+        return JsonResponse(serialize.data,safe=False)
+    
+    @staticmethod
+    def post(request):
+        """ Agregar tecnico a un vendedor
+            Parametros
+            
+                {
+                        
+                    "user_email":"test@test.test",
+                    "tecnico_rut" : "12345678-9"
+                }
+        """
+        data = common_methods.get_request_data(request)
+        techorder=create_user_assigned_tech(data)
+        serialize = TechnicianSerializer(techorder)
+        return JsonResponse(serialize.data,safe=False)
+
+    @staticmethod
+    def put(request):
+        """ Eliminar tecnico a vendedor
+            Parametros
+            
+                {
+                        
+                    "user_email":"test@test.test",
+                    "tecnico_rut" : "12345678-9"
+                }
+        """
+        data = common_methods.get_request_data(request)
+        techorder=delete_user_assigned_tech(data)
         serialize = TechnicianSerializer(techorder)
         return JsonResponse(serialize.data,safe=False)
     

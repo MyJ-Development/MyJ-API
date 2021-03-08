@@ -186,7 +186,7 @@ def get_order_by_date(date_init,date_end):
         raise Exception('date_end not provided.')
     try:
         
-        order = Order.objects.filter(fechaejecucion__range=[date_init,date_end]).order_by("fechaejecucion")
+        order = Order.objects.filter(fechaejecucion__range=[date_init,date_end]).order_by("-fechaejecucion")
     except Exception:
         raise Exception("Not found")
 
@@ -196,7 +196,7 @@ def get_order_by_rut(rut):
     if not rut:
         raise Exception('rut not provided.')
     try:
-        order = Order.objects.filter(client_order__rut__contains=rut)
+        order = Order.objects.filter(client_order__rut__contains=rut).order_by("-fechaejecucion")
     except Exception:
         raise Exception("Not found")
     return order
@@ -205,7 +205,7 @@ def get_order_by_rut_filter(rut):
     if not rut:
         raise Exception('rut not provided.')
     try:
-        order = Order.objects.filter(client_order__rut__contains=rut)
+        order = Order.objects.filter(client_order__rut__contains=rut).order_by("-fechaejecucion")
     except Exception:
         raise Exception("Not found")
     return order
@@ -224,24 +224,33 @@ def get_order_by_nombre_encargado_filter(nombre_encargado,date_init,date_end):
     if not nombre_encargado and date_init and date_end:
         raise Exception('nombre_encargado | date_init | date_end not provided.')
     try:
-        order = Order.objects.filter(fechaejecucion__range=[date_init,date_end],encargado__nombre__contains=nombre_encargado)
+        order = Order.objects.filter(fechaejecucion__range=[date_init,date_end],encargado__nombre__contains=nombre_encargado).order_by("-fechaejecucion")
 
     except Exception:
         raise Exception("Not found")
     return order
 
 def get_order_by_domicilio_filter(domicilio,date_init,date_end):
-    
     if not domicilio:
         raise Exception('domicilio not provided.')
-    if not date_init and date_end:
+    if date_init and date_end:
         try:
-            order = Order.objects.filter(fechaejecucion__range=[date_init,date_end],client_residence__direccion__contains=domicilio)
+            order = Order.objects.filter(fechaejecucion__range=[date_init,date_end],client_residence__direccion__contains=domicilio).order_by("fechaejecucion").order_by("-fechaejecucion")
         except Exception:
             raise Exception("Not found")
     else:
         try:
-            order = Order.objects.filter(client_residence__direccion__contains=domicilio)
+            order = Order.objects.filter(client_residence__direccion__contains=domicilio).order_by("-fechaejecucion")
+        except Exception:
+            raise Exception("Not found")
+    return order
+
+def get_order_by_created_by_filter(created_by,date_init,date_end):
+    if not created_by:
+        raise Exception('domicilio not provided.')
+    if date_init and date_end:
+        try:
+            order = Order.objects.filter(fechaejecucion__range=[date_init,date_end],created_by__email=created_by).order_by("-fechaejecucion")
         except Exception:
             raise Exception("Not found")
     return order
@@ -638,8 +647,11 @@ def create_techordertype(request):
     return techorders
 
 def delete_techordertype(request):
-    if not request['tecnico_rut']:
+    try:
+        request['tecnico_rut']
+    except:
         raise Exception('tecnico_rut not provided')
+
     try:
         techorders = Technician.objects.get(rut=request['tecnico_rut'])
     except Exception:
@@ -653,4 +665,63 @@ def delete_techordertype(request):
         raise Exception("Not found")
 
     techorders.type_orders.remove(order)
+    return techorders
+
+
+#UserAssignedTech
+def get_user_assigned_tech_by_user_email(email):
+    if not email:
+        raise Exception('email not provided.')
+    try:
+        techorders = Technician.objects.filter(assigned_user__email=email)
+    except Exception:
+        techorders = ''
+    return techorders
+
+def get_user_assigned_tech_by_tech_rut(rut):
+    if not rut:
+        raise Exception('rut not provided.')
+    try:
+        techorders = Technician.objects.filter(rut=rut)
+    except Exception:
+        techorders = ''
+    return techorders
+
+def create_user_assigned_tech(request):
+    if not request['tecnico_rut']:
+        raise Exception('tecnico_rut not provided')
+    try:
+        techorders = Technician.objects.get(rut=request['tecnico_rut'])
+    except Exception:
+        raise Exception("Not found")
+    
+    if not request['user_email']:
+        raise Exception('user_email not provided')
+    try:
+        user = User.objects.get(email=request['user_email'])
+    except Exception:
+        raise Exception("Not found")
+
+    techorders.assigned_user.add(user)
+    return techorders
+
+def delete_user_assigned_tech(request):
+    try:
+        request['tecnico_rut']
+    except:
+        raise Exception('tecnico_rut not provided')
+
+    try:
+        techorders = Technician.objects.get(rut=request['tecnico_rut'])
+    except Exception:
+        raise Exception("Not found")
+    
+    if not request['user_email']:
+        raise Exception('user_email not provided')
+    try:
+        user = User.objects.get(email=request['user_email'])
+    except Exception:
+        raise Exception("Not found")
+
+    techorders.assigned_user.remove(user)
     return techorders
