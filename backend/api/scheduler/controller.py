@@ -246,13 +246,17 @@ def get_order_by_domicilio_filter(domicilio,date_init,date_end):
     return order
 
 def get_order_by_created_by_filter(created_by,date_init,date_end):
-    if not created_by:
-        raise Exception('domicilio not provided.')
-    if date_init and date_end:
+    if date_init and date_end and created_by:
         try:
-            order = Order.objects.filter(fechaejecucion__range=[date_init,date_end],created_by__email=created_by).order_by("-fechaejecucion")
+            order = Order.objects.filter(created_at__range=[date_init,date_end],created_by__email=created_by).order_by("-created_at")
         except Exception:
-            raise Exception("Not found")
+            pass
+    elif date_init and date_end:
+        try:
+            order = Order.objects.filter(created_at__range=[date_init,date_end]).order_by("-created_at")
+        except Exception:
+            raise Exception("Not found")  
+
     return order
 
 def create_order(order):

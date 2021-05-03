@@ -516,8 +516,10 @@ class OrderByClientView(APIView):
             order = get_order_by_nombre_encargado_filter(filter_nombre_encargado,date_init,date_end)
         if (filter_domicilio):
             order = get_order_by_domicilio_filter(filter_domicilio,date_init,date_end)
-        if (filter_created_by):
+        if (filter_created_by and date_init and date_end):
             order = get_order_by_created_by_filter(filter_created_by,date_init,date_end)
+        elif(date_init and date_end):
+            order = get_order_by_created_by_filter("",date_init,date_end)
         serialize = OrderSerializer(order,many=True)
         return JsonResponse(serialize.data,safe=False)
 

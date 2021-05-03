@@ -14,7 +14,7 @@ common_methods = Common()
 
 
 class UserView(APIView):
-    permission_classes = (IsAuthenticated,)
+    #permission_classes = (IsAuthenticated,)
 
     @staticmethod
     def get(request):
