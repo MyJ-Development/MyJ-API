@@ -23,14 +23,14 @@ if not SECRET_KEY:
     logging.info("Debugging is enabled.")
 
     # SECURITY WARNING: don't run with debug turned on in production!
-    DEBUG = False
+    DEBUG = True
 
     # SECURITY WARNING: keep the secret key used in production secret!
     SECRET_KEY = '&j8au*lf%i=d2niee^qlza!d3=$(5c2h^)jt(r(m!u%8+2@wlm'
     ALLOWED_HOSTS = ["*"]
     LOG_LEVEL = 'INFO'
 else:
-    DEBUG = False
+    DEBUG = True
     ALLOWED_HOSTS = ["*"]
     LOG_LEVEL = 'INFO'
 

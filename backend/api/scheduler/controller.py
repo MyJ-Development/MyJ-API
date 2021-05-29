@@ -8,7 +8,9 @@ from django.conf import settings
 from ..models import *
 import logging
 from django.utils import timezone
-
+import datetime
+from datetime import timedelta  
+  
 encryptor = None
 
 def get_user_by_email(email):
@@ -45,15 +47,6 @@ def get_clients():
     except Exception:
         client = None
     return client
-    
-def update_client(client):
-    client.objects.filter(rut=client.rut).update(email=client.email,
-                rut=client.rut,
-                nombre=client.nombre,
-                contacto1=client.contacto1,
-                contacto2=client.contacto2,
-                updated_by=client.updated_by)
-    client.save()
 
 def create_client(client):
     user = get_user_by_email(client['created_by'])
@@ -70,16 +63,39 @@ def create_client(client):
     return client
 
 def update_client(client):
-    client_updated = Client.objects.get(rut=client['rut'])
-    user = get_user_by_email(client['created_by'])
-    client_updated.rut=client['rut']
-    client_updated.nombre=client['nombre']
-    client_updated.email=client['email']
-    client_updated.contacto1=client['contacto1']
-    client_updated.contacto2=client['contacto2']
-    client_updated.created_by=user
-    client_updated.updated_by=user
-    client_updated.save()
+    old_rut = ''
+    try:
+        old_rut = client['old_rut']
+        client_updated = Client.objects.get(rut=old_rut)
+    except:
+        client_updated = Client.objects.get(rut=client['rut'])
+
+    if(old_rut):
+        user = get_user_by_email(client['created_by'])
+        client_updated.rut=client['rut']
+        client_updated.nombre=client['nombre']
+        client_updated.email=client['email']
+        client_updated.contacto1=client['contacto1']
+        client_updated.contacto2=client['contacto2']
+        client_updated.created_by=user
+        client_updated.updated_by=user
+        client_updated.save()
+        residence = Residence.objects.filter(client__rut=old_rut).update(client=client_updated)
+        order = Order.objects.filter(client_order__rut=old_rut).update(client_order=client_updated)
+
+    else:
+        user = get_user_by_email(client['created_by'])
+        client_updated.rut=client['rut']
+        client_updated.nombre=client['nombre']
+        client_updated.email=client['email']
+        client_updated.contacto1=client['contacto1']
+        client_updated.contacto2=client['contacto2']
+        client_updated.created_by=user
+        client_updated.updated_by=user
+        client_updated.save()
+
+
+
     return client_updated
 
 #Residence
@@ -729,3 +745,24 @@ def delete_user_assigned_tech(request):
 
     techorders.assigned_user.remove(user)
     return techorders
+
+def get_orderchecker(rut):
+    valid = 0
+    order = ''
+    try:
+        client = get_client_by_rut(rut)
+        
+        if(client):
+            date_init = datetime.date.today()
+            date_end = (datetime.date.today() + timedelta(days=14))
+            order = Order.objects.filter(client_order__rut__contains=client.rut,fechaejecucion__range=[date_init,date_end],estadoticket__id__in=[1,2,3,5,6])
+            if(order):
+                valid = 0
+            else:
+                valid = 1
+        else:
+            valid= -2
+    except:
+        valid = -3
+
+    return valid

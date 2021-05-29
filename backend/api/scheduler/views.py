@@ -137,12 +137,11 @@ class SchedulerResidenceView(APIView):
             // Se deben enviar todos los campos, aunque no se quiera modificar
 
                 {
-                    
+                    "id":"1"
                     "comuna":"Comuna",
                     "direccion":"direccion",
                     "mac":"mac",
-                    "pppoe":"pppoe",
-                    "client_rut": "123456789"
+                    "pppoe":"pppoe"
                 }
         """
         data = common_methods.get_request_data(request)
@@ -794,6 +793,7 @@ class SchedulerUserAssignedTechView(APIView):
                     "rut_tecnico":"12345678-9" (Opcional)
                 }
         """
+        raise Exception(request.GET.get('user_email'))
         try: 
             techs=get_user_assigned_tech_by_user_email(request.GET.get('user_email'))
         except:
@@ -848,3 +848,30 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['role'] = user.role
 
         return token
+
+class SchedulerOrderCheckerView(APIView):
+
+    @staticmethod
+    def get(request):
+        """ Revisa si el cliente tiene ordenes abiertas o posee deuda (Esto ultimo pendiente)
+            Parametros
+            
+                {
+                    "rut_cliente":"12345678-9"
+                }
+        """
+
+        valid = 0
+        try:
+            valid = get_orderchecker(request.GET.get('rut_cliente'))
+        except:
+            valid = 0
+
+        if(not valid):
+            try:
+                valid = get_orderchecker(request.data['rut_cliente'])
+            except:
+                valid = 0
+        #serialize = OrderSerializer(valid,many=True)
+        return JsonResponse({"response":valid},safe=False)
+        #return JsonResponse(serialize.data,safe=False)
