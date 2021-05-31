@@ -264,12 +264,12 @@ def get_order_by_domicilio_filter(domicilio,date_init,date_end):
 def get_order_by_created_by_filter(created_by,date_init,date_end):
     if date_init and date_end and created_by:
         try:
-            order = Order.objects.filter(created_at__range=[date_init,date_end],created_by__email=created_by).order_by("-created_at")
+            order = Order.objects.filter(created_at__range=[date_init,date_end],created_by__email=created_by).order_by("created_at")
         except Exception:
             pass
     elif date_init and date_end:
         try:
-            order = Order.objects.filter(created_at__range=[date_init,date_end]).order_by("-created_at")
+            order = Order.objects.filter(created_at__range=[date_init,date_end]).order_by("created_at")
         except Exception:
             raise Exception("Not found")  
 

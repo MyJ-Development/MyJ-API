@@ -507,6 +507,10 @@ class OrderByClientView(APIView):
         except:
             pass
 
+        if (filter_created_by and date_init and date_end):
+            order = get_order_by_created_by_filter(filter_created_by,date_init,date_end)
+        elif(date_init and date_end):
+            order = get_order_by_created_by_filter("",date_init,date_end)
         if (filter_rut_cliente):
             order = get_order_by_rut_filter(filter_rut_cliente)
         if (filter_id_orden):
@@ -515,13 +519,10 @@ class OrderByClientView(APIView):
             order = get_order_by_nombre_encargado_filter(filter_nombre_encargado,date_init,date_end)
         if (filter_domicilio):
             order = get_order_by_domicilio_filter(filter_domicilio,date_init,date_end)
-        if (filter_created_by and date_init and date_end):
-            order = get_order_by_created_by_filter(filter_created_by,date_init,date_end)
-        elif(date_init and date_end):
-            order = get_order_by_created_by_filter("",date_init,date_end)
+
         serialize = OrderSerializer(order,many=True)
         return JsonResponse(serialize.data,safe=False)
-
+        
 class SchedulerPrioridadView(APIView):
 
     @staticmethod
