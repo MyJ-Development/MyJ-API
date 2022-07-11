@@ -199,7 +199,7 @@ def get_order_by_id(id):
 
 def get_order_by_date(date_init,date_end):
     if not date_end:
-        raise Exception('date_end not provided.')
+        raise Exception('date error not provided.')
     try:
         
         order = Order.objects.filter(fechaejecucion__range=[date_init,date_end]).order_by("-fechaejecucion")

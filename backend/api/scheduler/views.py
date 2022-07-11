@@ -227,11 +227,21 @@ class SchedulerOrderView(APIView):
         try: 
             valid = request.GET.get('date_init')
             valid = request.GET.get('date_end')
-            valid = 1
         except:
-            valid = 0
+            valid = ""
+
         if(valid):
             order = get_order_by_date(request.GET.get('date_init'),request.GET.get('date_end'))
+        else:
+            try:
+                valid = request.data['date_init']
+                valid = request.data['date_end']
+            except:
+                valid = ""
+            if(valid):
+                order = get_order_by_date(request.data['date_init'],request.data['date_end'])
+
+
 
         serialize = OrderSerializer(order,many=True)
         return JsonResponse(serialize.data,safe=False)
