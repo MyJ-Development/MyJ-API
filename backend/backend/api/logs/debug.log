@@ -1,0 +1,7 @@
+2023-06-15 20:53:17,632 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2023-06-15 20:53:25,863 django.server INFO     "GET /api/users/current HTTP/1.1" 200 149
+2023-06-15 20:53:25,995 django.server INFO     "GET /api/users/current HTTP/1.1" 200 149
+2023-06-15 20:53:26,081 django.request WARNING  Not Found: /api/users/39/photo
+2023-06-15 20:53:26,081 django.server WARNING  "GET /api/users/39/photo?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA1MDYwNzA3LCJqdGkiOiJiZWIwYjVhMjI0ZTI0OWQxODJmNTQzODFlYzc5NzMxZSIsInVzZXJfaWQiOjM5LCJyb2xlIjoidGVsZWZvbmlzdGEifQ.RQqmPoUQNopjRGGV2hIDdAPrEBVgqSTwItASyl0zUK4 HTTP/1.1" 404 6667
+2023-06-15 20:53:27,204 django.server INFO     "GET /api/scheduler/technician HTTP/1.1" 200 39722
+2023-06-15 20:53:30,452 django.server INFO     "GET /api/scheduler/order?date_init=2023-06-12&date_end=2023-06-18 HTTP/1.1" 200 638801
